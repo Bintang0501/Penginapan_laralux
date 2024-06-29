@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("tipe_produk_id");
             $table->string("nama", 100);
             $table->double("harga");
-            $table->string('gambar', 255);
+            $table->string('gambar', 255)->nullable();
             $table->text('deskripsi');
         });
     }

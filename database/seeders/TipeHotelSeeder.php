@@ -18,11 +18,11 @@ class TipeHotelSeeder extends Seeder
     public function run(): void
     {
         $this->tipeHotel->create([
-            "nama" => "Deluxe"
+            "nama" => "City"
         ]);
 
         $this->tipeHotel->create([
-            "nama" => "Star"
+            "nama" => "Residential"
         ]);
     }
 }
