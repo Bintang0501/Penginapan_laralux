@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('transaksi', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('users_id');
-            $table->integer('produk_id');
+            $table->string('users_id');
+            $table->string('nama_users');
+            $table->string('email_users');
+            $table->string('produk_id');
+            $table->string('nama_produk');
+            $table->string('tipe_produk');
             $table->double('total_beli');
             $table->double('pajak');
             $table->double('total_bayar');
-            $table->timestamps();
+            $table->dateTime('tanggal');
         });
     }
 

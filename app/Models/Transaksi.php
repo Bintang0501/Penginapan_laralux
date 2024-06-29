@@ -22,7 +22,11 @@ class Transaksi extends Model
 
     public $timestamps = false;
 
-    public function user_id(){
-        $this->hasMany(User::class, "uses_id");
+    public function users_id(){
+        $this->hasMany(User::class, "users_id");
+    
+    }
+    public function produk_id(){
+        $this->hasMany(Produk::class, "produk_id");
     }
 }
