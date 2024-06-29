@@ -1,6 +1,6 @@
 @extends('layout.conquer2')
 
-@section('icha', 'Fasilitas')
+@section('icha', 'Transaksi')
 
 @section('css')
     <link rel="stylesheet" href="{{ URL::asset('datatables/css/datatables.bootstrap.css') }}">
@@ -21,7 +21,7 @@
     <div class="portlet">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-book" style="margin-right: 5px"></i> Data @yield('icha')
+                <i class="fa fa-bars" style="margin-right: 5px"></i> Data @yield('icha')
             </div>
         </div>
         <div class="portlet-body">
@@ -35,9 +35,11 @@
                 <thead>
                     <tr>
                         <th style="text-align: center">No.</th>
+                        <th>Pembeli</th>
                         <th>Produk</th>
-                        <th>Nama Fasilitas</th>
-                        <th style="text-align: left">Deskripsi</th>
+                        <th>Total Beli</th>
+                        <th>Pajak</th>
+                        <th>Total Bayar</th>
                         <th style="text-align: center">Aksi</th>
                     </tr>
                 </thead>
@@ -45,18 +47,16 @@
                     @php
                         $nomer = 0;
                     @endphp
-                    @foreach ($fasilitas as $item)
+                    @foreach ($transaksi as $item)
                         <tr>
                             <td style="text-align: center">{{ ++$nomer }}.</td>
-                            <td>{{ $item->products->nama }} - Rp. {{ number_format($item->products->harga) }}</td>
-                            <td>{{ $item->nama_fasilitas }}</td>
-                            <td style="text-align: left">{{ $item->deskripsi }}</td>
+                            <td>{{ $item->nama }}</td>
                             <td style="text-align: center">
                                 <button onclick="editData(`{{ $item['id'] }}`)" type="button"
                                     class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">
                                     <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
                                 </button>
-                                <form action="{{ url('/fasilitas/' . $item['id']) }}" method="POST"
+                                <form action="{{ url('/tipe-produk/' . $item['id']) }}" method="POST"
                                     style="display: inline">
                                     @csrf
                                     @method('DELETE')
@@ -85,28 +85,13 @@
                         <i class="fa fa-plus"></i> Tambah Data
                     </h4>
                 </div>
-                <form action="{{ url('/fasilitas') }}" method="POST">
+                <form action="{{ url('/tipe-produk') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="nama_fasilitas"> Nama Fasilitas </label>
-                            <input type="text" class="form-control" name="nama_fasilitas" id="nama_fasilitas"
-                                placeholder="Masukkan Nama Fasilitas" required value="{{ old('nama_fasilitas') }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="produk_id"> Nama Produk </label>
-                            <select name="produk_id" class="form-control" id="produk_id" required>
-                                <option value="">- Pilih -</option>
-                                @foreach ($produk as $item)
-                                    <option value="{{ $item->id }}">
-                                        {{ $item->nama }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="deskripsi"> Deskripsi </label>
-                            <textarea name="deskripsi" class="form-control" id="deskripsi" rows="5" placeholder="Masukkan Deskripsi" required>{{ old('deskripsi') }}</textarea>
+                            <label for="nama"> Tipe Produk </label>
+                            <input type="text" class="form-control" name="nama" id="nama"
+                                placeholder="Masukkan Tipe Produk" required value="{{ old('nama') }}">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -146,14 +131,15 @@
 @endsection
 
 @section('javascript')
+
     <script src="{{ URL::asset('datatables/javascript/datatables.js') }}"></script>
     <script src="{{ URL::asset('datatables/javascript/datatables.bootstrap.js') }}"></script>
     <script type="text/javascript">
         new DataTable('#example');
 
-        function editData(idFasilitas) {
+        function editData(idtransaksi) {
             $.ajax({
-                url: "{{ url('/fasilitas') }}" + "/" + idFasilitas + "/edit",
+                url: "{{ url('/tipe-produk') }}" + "/" + idtransaksi + "/edit",
                 type: "GET",
                 success: function(response) {
                     $("#modal-content-edit").html(response)

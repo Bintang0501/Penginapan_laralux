@@ -21,4 +21,8 @@ class Transaksi extends Model
     public $primaryKey = 'id';
 
     public $timestamps = false;
+
+    public function user_id(){
+        $this->hasMany(User::class, "uses_id");
+    }
 }

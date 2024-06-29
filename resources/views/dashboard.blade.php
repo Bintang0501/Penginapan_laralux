@@ -2,6 +2,7 @@
 @section('eleanor')
         ini page Hotel
         Ada
+        {{ Auth::user()->name }}
 @endsection
 @section('budi', 'Hoi ini judulku....gaess....')
 @section('icha', 'Ini halaman coba-coba hotel')

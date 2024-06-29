@@ -24,6 +24,6 @@ class Fasilitas extends Model
 
     public function products()
     {
-        return $this->belongsTo(Produk::class, "id");
+        return $this->belongsTo(Produk::class, "produk_id");
     }
 }
