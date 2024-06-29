@@ -49,19 +49,13 @@ class ProdukController extends Controller
 
             DB::beginTransaction();
 
-            // Handle file upload
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $filename = 'Produk_' . time() . '.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs('public/produk', $filename);
+            $data = $request->all();
 
-                // Save file information to the database
-                $data = $request->all();
-                $data['gambar'] = $filename;
-                $this->produk->create($data);
-            } else {
-                $this->produk->create($request->all());
+            if ($request->file('gambar')) {
+                $data["gambar"] = $request->file("gambar")->store("produk");
             }
+
+            $this->produk->create($data);
 
             DB::commit();
 

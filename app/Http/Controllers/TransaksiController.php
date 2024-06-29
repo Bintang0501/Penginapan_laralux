@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Fasilitas;
 use App\Models\Produk;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class FasilitasController extends Controller
+class TransaksiController extends Controller
 {
-    protected $produk, $fasilitas;
+    protected $transaksi, $produk;
 
     public function __construct()
     {
+        $this->transaksi = new Transaksi();
         $this->produk = new Produk();
-        $this->fasilitas = new Fasilitas();
     }
 
     public function index()
@@ -23,12 +23,11 @@ class FasilitasController extends Controller
 
             DB::beginTransaction();
 
-            $data["produk"] = $this->produk->orderBy("nama", "ASC")->get();
-            $data["fasilitas"] = $this->fasilitas->orderBy("nama_fasilitas", "ASC")->get();
+            $data["transaksi"] = $this->transaksi->all();
 
             DB::commit();
 
-            return view("fasilitas.index", $data);
+            return view("transaksi.index", $data);
 
         } catch (\Exception $e) {
 
@@ -44,7 +43,7 @@ class FasilitasController extends Controller
 
             DB::beginTransaction();
 
-            $this->fasilitas->create($request->all());
+            $this->transaksi->create($request->all());
 
             DB::commit();
 
@@ -64,12 +63,11 @@ class FasilitasController extends Controller
 
             DB::beginTransaction();
 
-            $data["produk"] = $this->produk->orderBy("name", "ASC")->get();
-            $data['edit'] = $this->fasilitas->where("id", $id)->first();
+            $data['edit'] = $this->transaksi->where("id", $id)->first();
 
             DB::commit();
 
-            return view("fasilitas.edit", $data);
+            return view("transaksi.edit", $data);
 
         } catch (\Exception $e) {
 
@@ -85,10 +83,8 @@ class FasilitasController extends Controller
 
             DB::beginTransaction();
 
-            $this->fasilitas->where("id", $id)->update([
-                "nama_fasilitas" => $request->nama_fasilitas,
-                "produk_id" => $request->produk_id,
-                "deskripsi" => $request->deskripsi
+            $this->transaksi->where("id", $id)->update([
+                "name" => $request->name
             ]);
 
             DB::commit();
@@ -109,7 +105,7 @@ class FasilitasController extends Controller
 
             DB::beginTransaction();
 
-            $this->fasilitas->where("id", $id)->delete();
+            $this->transaksi->where("id", $id)->delete();
 
             DB::commit();
 

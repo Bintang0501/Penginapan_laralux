@@ -16,7 +16,7 @@
                 </form>
             </li>
             <li class="start active ">
-                <a href="{{ url('hotel') }}">
+                <a href="{{ url('dashboard') }}">
                     <i class="icon-home"></i>
                     <span class="title">Dashboard</span>
                     <span class="selected"></span>
@@ -50,6 +50,12 @@
                 <a href="{{ url('fasilitas') }}">
                     <i class="fa fa-book"></i>
                     <span class="title">Fasilitas</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url('transaksi') }}">
+                    <i class="fa fa-book"></i>
+                    <span class="title">Transaksi</span>
                 </a>
             </li>
             <li>

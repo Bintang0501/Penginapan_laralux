@@ -13,6 +13,7 @@ use App\Http\Controllers\TipeHotelController;
 use App\Http\Controllers\RiwaayatTransaksiSaya;
 use App\Http\Controllers\TipeProdukController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\TypeController;
 use App\Http\Controllers\UsersController;
 
@@ -45,6 +46,7 @@ Route::group(["middleware" => ["auth-login"]], function () {
     Route::resource('tipe-hotel', TipeHotelController::class);
     Route::resource("produk", ProdukController::class);
     Route::resource("fasilitas", FasilitasController::class);
+    Route::resource("transaksi", TransaksiController::class);
     Route::resource("users", UsersController::class);
 });
 

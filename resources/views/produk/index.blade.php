@@ -49,7 +49,7 @@
                         <tr>
                             <td style="text-align: center">{{ ++$nomer }}.</td>
                             <td>{{ $item->nama }}</td>
-                            {{-- <td style="text-align: center">{{ $item->tipeProducts->nama }}</td> --}}
+                            <td style="text-align: center">{{ $item->tipe_produk->nama }}</td>
                             <td style="text-align: center">Rp. {{ number_format($item->harga) }} </td>
                             <td style="text-align: center">
                                 <button onclick="editData(`{{ $item['id'] }}`)" type="button"
@@ -84,7 +84,7 @@
                         <i class="fa fa-plus"></i> Tambah Data
                     </h4>
                 </div>
-                <form action="{{ url('/produk') }}" method="POST">
+                <form action="{{ url('/produk') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">

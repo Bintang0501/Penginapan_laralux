@@ -29,7 +29,7 @@ class Produk extends Model
 
     public function tipe_produk()
     {
-        return $this->belongsTo(TipeProduk::class, "id");
+        return $this->belongsTo(TipeProduk::class, "tipe_produk_id");
     }
 
     public function fasilitas()
