@@ -18,65 +18,52 @@
         </div>
     @endif
 
-    <div class="portlet">
-        <div class="portlet-title">
-            <div class="caption">
-                <i class="fa fa-book" style="margin-right: 5px"></i> Data @yield('icha')
+    <div class="row">
+        @foreach ($listRekomendasi as $item)
+            <div class="col-md-4">
+                <div class="portlet">
+                    <div class="portlet-body">
+                        <img src="{{ URL::asset('images/hotel-img.jpeg') }}" alt="Image Hotel"
+                            style="display: block; margin: 0 auto;">
+                        <p style="margin-top: 10px">
+                        <h4>
+                            <strong>
+                                Hotel {{ $item->nama }}
+                            </strong>
+                        </h4>
+                        {{ $item->alamat }}
+                        <br>
+                        {{ $item->nomor_telepon }}
+                        <br>
+                        {{ $item->email }}
+                        </p>
+                        <button onclick="tambahProduk(`{{ $item->id }}`)" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                            <i class="fa fa-plus" style="margin-right: 5px;"></i> Tambah Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <i class="fa fa-plus"></i> Tambah Data
+                    </h4>
+                </div>
+                <div id="modal-content-data">
+
+                </div>
             </div>
         </div>
-        <div class="portlet-body">
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
-                <i class="fa fa-plus" style="margin-right: 5px;"></i> Tambah Data
-            </button>
-
-            <a href="" class="btn btn-danger btn-sm">
-                <i class="fa fa-download"></i> Download PDF
-            </a>
-            <hr>
-
-            <table class="table table-bordered" id="example" style="width: 100%">
-                <thead>
-                    <tr>
-                        <th style="text-align: center">No.</th>
-                        <th>Name</th>
-                        <th style="text-align: center">Tipe Produk</th>
-                        <th style="text-align: center">Harga</th>
-                        <th style="text-align: center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-                {{-- <tbody>
-                    @php
-                        $nomer = 0;
-                    @endphp
-                    @foreach ($produk as $item)
-                        <tr>
-                            <td style="text-align: center">{{ ++$nomer }}.</td>
-                            <td>{{ $item->name }}</td>
-                            <td style="text-align: center">{{ $item->tipeProducts->name }}</td>
-                            <td style="text-align: center">Rp. {{ number_format($item->harga) }} </td>
-                            <td style="text-align: center">
-                                <button onclick="editData(`{{ $item['id'] }}`)" type="button"
-                                    class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">
-                                    <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
-                                </button>
-                                <form action="{{ url('/produk/' . $item['id']) }}" method="POST" style="display: inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button onclick="return confirm('Apakah Anda Yakin? Ingin Menghapus Data Ini?')"
-                                        type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-times" style="margin-right: 5px;"></i> Hapus
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody> --}}
-            </table>
-        </div>
     </div>
+
 
     <!-- Tambah Data -->
     {{-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -154,20 +141,20 @@
 @section('javascript')
     <script src="{{ URL::asset('datatables/javascript/datatables.js') }}"></script>
     <script src="{{ URL::asset('datatables/javascript/datatables.bootstrap.js') }}"></script>
-    {{-- <script type="text/javascript">
+    <script type="text/javascript">
         new DataTable('#example');
 
-        function editData(idProduk) {
+        function tambahProduk(idProduk) {
             $.ajax({
-                url: "{{ url('/produk') }}" + "/" + idProduk + "/edit",
+                url: "{{ url('/rekomendasi-hotel') }}" + "/" + idProduk + "/produk",
                 type: "GET",
                 success: function(response) {
-                    $("#modal-content-edit").html(response)
+                    $("#modal-content-data").html(response)
                 },
                 error: function(error) {
                     console.log(error);
                 }
             });
         }
-    </script> --}}
+    </script>
 @endsection

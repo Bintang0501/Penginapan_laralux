@@ -23,9 +23,11 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url('hotel') }}">
+                <a href="{{ url('rekomendasi-hotel') }}">
                     <i class="icon-bar-chart"></i>
-                    <span class="title">Daftar Hotel</span>
+                    <span class="title">
+                        Rekomendasi Hotel
+                    </span>
                 </a>
             </li>
             <li>

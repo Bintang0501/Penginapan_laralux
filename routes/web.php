@@ -7,6 +7,7 @@ use App\Http\Controllers\FasilitasController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\ListRekomendasiController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TipeHotelController;
@@ -70,6 +71,13 @@ Route::prefix("riwayat-transaksi-saya")->group(function () {
     Route::controller(RiwaayatTransaksiSaya::class)->group(function () {
         Route::get("/", "index")->name("pages.riwayat-transaksi-saya.index");
         Route::post("/", "store")->name("pages.riwayat-transaksi-saya.store");
+    });
+});
+
+Route::prefix("rekomendasi-hotel")->group(function() {
+    Route::controller(ListRekomendasiController::class)->group(function() {
+        Route::get("/", "index");
+        Route::get("/{id}/produk", "search");
     });
 });
 
