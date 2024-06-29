@@ -6,7 +6,7 @@
     <meta name="author" content="Kodinger">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>
-        Website Reservasi LaraLux
+        Website Reservasi LaraLux | Login Akun
     </title>
     <link rel="icon" type="image/png" href="https://trackormawa.polindra.ac.id/images/logo-polindra.png" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -40,16 +40,11 @@
                 <form action="{{ url('/authorization/login') }}" method="POST">
                     {{ csrf_field() }}
                     <div class="card-body">
-                        {{-- <div class="image">
-                        <center>
-                            <img src="https://trackormawa.polindra.ac.id/images/logo-polindra.png" style="width: 20%; height: 20%">
-                        </center>
-                    </div> --}}
                         <h4 class="text-center" style="margin-top: 20px">
-                            Website Reservasi Hotel
+                            Form Login
                         </h4>
                         <h6 class="text-center" style="color: gray">
-                            LaraLux
+                            Silahkan Login Terlebih Dahulu
                         </h6>
 
                         <div class="form-group">
@@ -73,6 +68,9 @@
                             style="width: 100%; background-color: #00A0F0">
                             Masuk
                         </button>
+                        <div class="mt-2">
+                            Belum Punya Akun? Silahkan <a href="{{ url('/authorization/registrasi') }}">Registrasi Disini</a>
+                        </div>
                     </div>
                 </form>
             </div>

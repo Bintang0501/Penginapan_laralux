@@ -437,7 +437,11 @@
 
     <div class="page-container">
 
+        @if (Auth::user()->role == "PEMBELI")
+            @include("layout.component.sidebar.sidebar-pembeli")
+        @else
         @include("layout.component.sidebar.sidebar")
+        @endif
 
         <!-- BEGIN CONTENT -->
         <div class="page-content-wrapper">
