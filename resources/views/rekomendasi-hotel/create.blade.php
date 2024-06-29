@@ -7,7 +7,7 @@
                 <option value="">- Pilih -</option>
                 @foreach ($produk as $item)
                     <option value="">
-                        {{ $item->nama }} {{ $item->tipe_produk->nama }}
+                        {{ $item->nama }} - Tipe Produk : {{ $item->tipe_produk->nama }}
                     </option>
                 @endforeach
             </select>
