@@ -33,5 +33,12 @@ class UserSeeder extends Seeder
             "password" => bcrypt("password"),
             "role" => "PEMBELI"
         ]);
+
+        User::create([
+            "name" => "Pembeli2",
+            "email" => "pembeli2@gmail.com",
+            "password" => bcrypt("password"),
+            "role" => "PEMBELI"
+        ]);
     }
 }

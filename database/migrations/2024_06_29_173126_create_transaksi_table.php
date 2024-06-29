@@ -16,9 +16,6 @@ return new class extends Migration
             $table->string('users_id');
             $table->string('nama_users');
             $table->string('email_users');
-            $table->string('produk_id');
-            $table->string('nama_produk');
-            $table->string('tipe_produk');
             $table->double('total_beli');
             $table->double('pajak');
             $table->double('total_bayar');
