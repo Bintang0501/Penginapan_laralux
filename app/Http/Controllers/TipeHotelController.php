@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hotel;
-use App\Models\Produk;
-use App\Models\TipeProduk;
+use App\Models\TipeHotel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ProdukController extends Controller
+class TipeHotelController extends Controller
 {
-    protected $produk, $tipeProduk, $hotel;
+    protected $tipeHotel;
 
     public function __construct()
     {
-        $this->produk = new Produk();
-        $this->tipeProduk = new TipeProduk();
-        $this->hotel = new Hotel();
+        $this->tipeHotel = new TipeHotel();
     }
 
     public function index()
@@ -25,15 +21,11 @@ class ProdukController extends Controller
 
             DB::beginTransaction();
 
-            $data["produk"] = $this->produk->orderBy("nama", "ASC")->get();
-
-            $data["tipeProduk"] = $this->tipeProduk->orderBy("nama", "ASC")->get();
-
-            $data["hotel"] = $this->hotel->all();
+            $data["tipeHotel"] = $this->tipeHotel->orderBy("nama", "ASC")->get();
 
             DB::commit();
 
-            return view("produk.index", $data);
+            return view("tipe-hotel.index", $data);
 
         } catch (\Exception $e) {
 
@@ -49,19 +41,7 @@ class ProdukController extends Controller
 
             DB::beginTransaction();
 
-            // Handle file upload
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $filename = 'Produk_' . time() . '.' . $file->getClientOriginalExtension();
-                $path = $file->storeAs('public/produk', $filename);
-
-                // Save file information to the database
-                $data = $request->all();
-                $data['gambar'] = $filename;
-                $this->produk->create($data);
-            } else {
-                $this->produk->create($request->all());
-            }
+            $this->tipeHotel->create($request->all());
 
             DB::commit();
 
@@ -81,12 +61,11 @@ class ProdukController extends Controller
 
             DB::beginTransaction();
 
-            $data['edit'] = $this->produk->where("id", $id)->first();
-            $data["tipeProduk"] = $this->tipeProduk->orderBy("name", "ASC")->get();
+            $data['edit'] = $this->tipeHotel->where("id", $id)->first();
 
             DB::commit();
 
-            return view("produk.edit", $data);
+            return view("tipe-hotel.edit", $data);
 
         } catch (\Exception $e) {
 
@@ -102,10 +81,8 @@ class ProdukController extends Controller
 
             DB::beginTransaction();
 
-            $this->produk->where("id", $id)->update([
-                "name" => $request->name,
-                "tipe_produk_id" => $request->tipe_produk_id,
-                "harga" => $request->harga
+            $this->tipeHotel->where("id", $id)->update([
+                "nama" => $request->nama
             ]);
 
             DB::commit();
@@ -126,7 +103,7 @@ class ProdukController extends Controller
 
             DB::beginTransaction();
 
-            $this->produk->where("id", $id)->delete();
+            $this->tipeHotel->where("id", $id)->delete();
 
             DB::commit();
 

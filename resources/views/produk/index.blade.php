@@ -48,8 +48,8 @@
                     @foreach ($produk as $item)
                         <tr>
                             <td style="text-align: center">{{ ++$nomer }}.</td>
-                            <td>{{ $item->name }}</td>
-                            <td style="text-align: center">{{ $item->tipeProducts->name }}</td>
+                            <td>{{ $item->nama }}</td>
+                            {{-- <td style="text-align: center">{{ $item->tipeProducts->nama }}</td> --}}
                             <td style="text-align: center">Rp. {{ number_format($item->harga) }} </td>
                             <td style="text-align: center">
                                 <button onclick="editData(`{{ $item['id'] }}`)" type="button"
@@ -88,9 +88,20 @@
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="name"> Nama </label>
-                            <input type="text" class="form-control" name="name" id="name"
+                            <label for="name"> Nama Produk </label>
+                            <input type="text" class="form-control" name="nama" id="name"
                                 placeholder="Masukkan Name Produk" required value="{{ old('name') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="hotel_id"> Nama Hotel </label>
+                            <select name="hotel_id" class="form-control" id="hotel_id" required>
+                                <option value="">- Pilih -</option>
+                                @foreach ($hotel as $item)
+                                    <option value="{{ $item->id }}">
+                                        {{ $item->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="tipe_produk_id"> Tipe Produk </label>
@@ -98,7 +109,7 @@
                                 <option value="">- Pilih -</option>
                                 @foreach ($tipeProduk as $item)
                                     <option value="{{ $item->id }}">
-                                        {{ $item->name }}
+                                        {{ $item->nama }}
                                     </option>
                                 @endforeach
                             </select>
@@ -107,6 +118,16 @@
                             <label for="harga"> Harga Produk </label>
                             <input type="number" class="form-control" name="harga" id="harga"
                                 placeholder="Masukkan Harga Produk" min="1000" required value="{{ old('harga') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="gambar"> Gambar </label>
+                            <input type="file" class="form-control" name="gambar" id="gambar" required value="{{ old('gambar') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="deskripsi"> Deskripsi </label>
+                            <textarea class="form-control" name="deskripsi" placeholder="Masukkan deskripsi Produk" id="deskripsi" required value="{{ old('deskripsi') }}">
+
+                            </textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

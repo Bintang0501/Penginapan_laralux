@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('produk', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->integer("hotel_id");
-            $table->integer("tipe_produk_id");
+            $table->string("hotel_id");
+            $table->string("tipe_produk_id");
             $table->string("nama", 100);
             $table->double("harga");
             $table->string('gambar', 255);

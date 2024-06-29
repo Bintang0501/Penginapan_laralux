@@ -1,129 +1,182 @@
 @extends('layout.conquer2')
+
+@section('icha', 'Hotel')
+
+@section('css')
+    <link rel="stylesheet" href="{{ URL::asset('datatables/css/datatables.bootstrap.css') }}">
+@endsection
+
 @section('eleanor')
 
-<a class="btn btn-danger"  href="{{route('hotel.create')}}">Add Hotel</a>
-<a class="btn btn-warning" data-toggle="modal" href="#disclaimer">Disclaimer</a>
+    @if (session('success'))
+        <div class="alert alert-success">
+            <strong>Berhasil,</strong> {!! session('success') !!}
+        </div>
+    @elseif(session('error'))
+        <div class="alert alert-danger">
+            <strong>Gagal,</strong> {!! session('error') !!}
+        </div>
+    @endif
 
-@if (session('status'))
-<div class="alert alert-success">
-    {{session('status')}}
-</div>
-@endif
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-bars" style="margin-right: 5px"></i> Data @yield('icha')
+            </div>
+        </div>
+        <div class="portlet-body">
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-plus" style="margin-right: 5px;"></i> Tambah Data
+            </button>
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Nama</th>
-            <th>Alamat</th>
-            <th>Kota</th>
-            <th>Tipe</th>
-            <th>Detail</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($dataku as $hotel)
-            <tr>
-                <td>{{ $hotel->name }}</td>
-                <td>{{ $hotel->address }}</td>
-                <td>{{ $hotel->city }}</td>
-                <td>{{ $hotel->type }}</td>
-                <td>
-                    <a class="btn btn-warning" href="{{ route ('hotel.edit',$hotel->id)}}">Edit</a>
+            <hr>
 
-                    <form method="POST" action="{{route('hotel.destroy',$hotel->id)}}">
-                        @csrf
-                        @method('DELETE')
-                        <input type="submit"
-                            onclick="return confirm('Are you want to delete this?')"
-                            value="Delete" class="btn btn-danger" />
-                    </form>
-
-
-                    <a class="btn btn-success" data-toggle="modal" href="#lihat-{{ $hotel->id }}">Lihat</a>
-                    <div class="modal fade" id="lihat-{{ $hotel->id }}" tabindex="-1" role="basic" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                <h4 class="modal-title">Lihat Hotel</h4>
-                                </div>
-                                <div class="modal-body">
-                                <img src="{{ asset(env('PATH_GAMBAR_HOTEL').$hotel->id.'.jpg') }}" style="width: 500px"/>
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                            </div>
-                    </div>
-                    <div class="coba">
-                        keluar loading animasi
-                    </div>
-                    <a class="btn btn-success tombol-produk" data-toggle="modal" href="#" data-id="{{ $hotel->id }}">Produk</a>
-                </td>
-            </tr>
-            {{-- @if ($hotel->products)
-                @foreach($hotel->products as $product)
+            <table class="table table-bordered" id="example" style="width: 100%">
+                <thead>
                     <tr>
-                        <td colspan="3">{{ $product->name }}</td>
-                        <td>{{ $product->price }}</td>
+                        <th style="text-align: center">No.</th>
+                        <th>Tipe Hotel</th>
+                        <th>Nama Hotel</th>
+                        <th>Alamat</th>
+                        <th>No Telp</th>
+                        <th>Email</th>
+                        <th style="text-align: center">Aksi</th>
                     </tr>
-                @endforeach
-            @endif --}}
-        @endforeach
-    </tbody>
-</table>
-<div class="modal fade" id="disclaimer" tabindex="-1" role="basic" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-            <h4 class="modal-title">DISCLAIMER</h4>
-            </div>
-            <div class="modal-body">
-            Pictures shown are for illustration purpose only. Actual product may vary due to product enhancement.
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+                </thead>
+                <tbody>
+                    @php
+                        $nomer = 0;
+                    @endphp
+                    @foreach ($hotel as $item)
+                        <tr>
+                            <td style="text-align: center">{{ ++$nomer }}.</td>
+                            <td>{{ $item->tipe_hotel->nama }}</td>
+                            <td>{{ $item->nama }}</td>
+                            <td>{{ $item->alamat }}</td>
+                            <td>{{ $item->nomor_telepon }}</td>
+                            <td>{{ $item->email }}</td>
+                            <td style="text-align: center">
+                                <button onclick="editData(`{{ $item['id'] }}`)" type="button"
+                                    class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">
+                                    <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
+                                </button>
+                                <form action="{{ url('/hotel/' . $item['id']) }}" method="POST"
+                                    style="display: inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button onclick="return confirm('Apakah Anda Yakin? Ingin Menghapus Data Ini?')"
+                                        type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-times" style="margin-right: 5px;"></i> Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-        </div>
-</div>
+    </div>
 
-<div class="modal fade" id="lihat-produk" tabindex="-1" role="basic" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-            <h4 class="modal-title">Lihat Produk</h4>
-            </div>
-            <div class="modal-body" id="data-produk">
-            <!-- ini nanti berisi datanya yg dinamis -->
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <!-- Tambah Data -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <i class="fa fa-plus"></i> Tambah Data
+                    </h4>
+                </div>
+                <form action="{{ url('/hotel') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name"> Tipe Hotel </label>
+                            <select class="form-control" name="tipe_hotel_id" id="tipe_hotel_id" required value="{{ old('tipe_hotel_id') }}">
+                                <option selected>~~ PILIH TIPE HOTEL ~~</option>
+                                @foreach ($tipe_hotel as $tipe)
+                                <option value="{{ $tipe->id }}">{{ $tipe->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name"> Nama Hotel </label>
+                            <input type="text" class="form-control" name="nama" id="nama"
+                                placeholder="Masukkan Nama Hotel" required value="{{ old('nama') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="alamat"> Alamat </label>
+                            <textarea class="form-control" name="alamat" placeholder="Masukkan alamat hotel" id="alamat" required value="{{ old('nama') }}">
+
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="nomor_telepon"> Nomor Telepon </label>
+                            <input type="text" class="form-control" name="nomor_telepon" id="nomor_telepon"
+                                placeholder="Masukkan nomor telepon" required value="{{ old('nomor_telepon') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="email"> Email </label>
+                            <input type="email" class="form-control" name="email" id="email"
+                                placeholder="Masukkan email" required value="{{ old('email') }}">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-danger btn-sm">
+                            <i class="fa fa-times" style="margin-right: 5px"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa fa-save" style="margin-right: 5px;"></i> Simpan
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
+    <!-- End -->
+
+    <!-- Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <i class="fa fa-edit"></i> Edit Data
+                    </h4>
+                </div>
+                <div id="modal-content-edit">
+                    <!-- Form -->
+                </div>
+            </div>
         </div>
-</div>
+    </div>
+    <!-- End -->
+
 @endsection
-@section('budi', 'Daftar Hotel')
-@section('icha', 'Halaman Daftar Hotel')
+
 @section('javascript')
-<script>
-$('.tombol-produk').click(function() {
-    var idHotel = $(this).attr('data-id');
-    //tampilkan gambar gif animated di elementnya misal coba
-    //alert('masuk gaes, id hotel = ' + idHotel);
-    $.ajax({
-        type:'GET',
-        url:'{{ url('/tampil-produk/') }}/'+idHotel,
-        success: function(data){
 
-            $('.coba').html(data.msg);
+    <script src="{{ URL::asset('datatables/javascript/datatables.js') }}"></script>
+    <script src="{{ URL::asset('datatables/javascript/datatables.bootstrap.js') }}"></script>
+    <script type="text/javascript">
+        new DataTable('#example');
+
+        function editData(idHotel) {
+            $.ajax({
+                url: "{{ url('/hotel') }}" + "/" + idHotel + "/edit",
+                type: "GET",
+                success: function(response) {
+                    $("#modal-content-edit").html(response)
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         }
-    });
-
-})
-</script>
+    </script>
 @endsection

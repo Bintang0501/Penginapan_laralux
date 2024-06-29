@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tipe_produk', function (Blueprint $table) {
             $table->uuid("id")->primary();
-            $table->string("name", 150);
+            $table->string("nama", 150);
         });
     }
 

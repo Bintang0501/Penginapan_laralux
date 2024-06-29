@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('membership', function (Blueprint $table) {
+        Schema::create('transaksi', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->integer('users_id');
-            $table->integer('poin');
+            $table->integer('produk_id');
+            $table->double('total_beli');
+            $table->double('pajak');
+            $table->double('total_bayar');
+            $table->timestamps();
         });
     }
 
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('membership');
+        Schema::dropIfExists('transaksi');
     }
 };

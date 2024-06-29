@@ -3,93 +3,124 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
-use App\Models\Type;
+use App\Models\TipeHotel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
 class HotelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $hotel;
+    protected $tipe_hotel;
+
+    public function __construct()
+    {
+        $this->hotel = new Hotel();
+        $this->tipe_hotel = new TipeHotel();
+    }
+
     public function index()
     {
-        $hotels = Hotel::all();
-        // $hotels = DB::table('hotel123')->get();
-        return view('hotel.index', ['dataku' => $hotels]);
+        try {
+
+            DB::beginTransaction();
+
+            $data["hotel"] = $this->hotel->with("tipe_hotel")->orderBy("nama", "ASC")->get();
+
+            $data["tipe_hotel"] = $this->tipe_hotel->all();
+
+            DB::commit();
+
+            return view("hotel.index", $data);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with("error", $e->getMessage());
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $tipes = Type::all();
-        return view('hotel.create',compact('tipes'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {        
-        $newHotel = new Hotel;
-        $newHotel->name = $request->namaHotel;
-        $newHotel->address = $request->address;
-        $newHotel->city = $request->city;
-        $newHotel->type_id = $request->type;
-        // $newTipe->name = $request->get("namaTipe");
-        $newHotel->save();
-        return redirect()->route('hotel.index')->with('status','Data berhasil masuk');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Hotel $hotel)
     {
-        //
+        try {
+
+            DB::beginTransaction();
+
+            $this->hotel->create($request->all());
+
+            DB::commit();
+
+            return back()->with("success", "Data Berhasil di Simpan");
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with("error", $e->getMessage());
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
-        $data = Hotel::find($id);
-        $tipes = Type::all();
-        return view('hotel.edit',compact('data','tipes'));
+        try {
+
+            DB::beginTransaction();
+
+            $data['edit'] = $this->hotel->where("id", $id)->first();
+
+            $data["tipe_hotel"] = $this->tipe_hotel->all();
+
+            DB::commit();
+
+            return view("hotel.edit", $data);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with("error", $e->getMessage());
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Hotel $hotel)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+
+            DB::beginTransaction();
+
+            $this->hotel->where("id", $id)->update([
+                "name" => $request->name
+            ]);
+
+            DB::commit();
+
+            return back()->with("success", "Data Berhasil di Simpan");
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with("error", $e->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        $user=Auth::user();
-        $this->authorize('delete-permission',$user);
-
         try {
-            $hotel = Hotel::find($id);
-            $hotel->delete();
 
-            return redirect()->route('hotel.index')
-                ->with('status','Data berhasil dihapus');
+            DB::beginTransaction();
 
-        } catch (\Throwable $th) {
-            $msg="Tidak bisa dihapus karena data sudah digunakan";
-            return redirect()->route('hotel.index')
-                ->with('status',$msg);
+            $this->hotel->where("id", $id)->delete();
+
+            DB::commit();
+
+            return back()->with("success", "Data Berhasil di Hapus");
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with("error", $e->getMessage());
         }
-        
     }
 }

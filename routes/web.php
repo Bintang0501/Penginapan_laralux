@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\TipeHotelController;
 use App\Http\Controllers\TipeProdukController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TypeController;
@@ -27,10 +28,6 @@ use App\Http\Controllers\UsersController;
 Route::get('/', [HotelController::class, 'index']);
 Route::get('/tampil-produk/{id}', [ProductController::class, 'tampilProduk']);
 
-Route::resource('hotel', HotelController::class);
-Route::resource('transaction', TransactionController::class);
-Route::resource('tipe', TypeController::class);
-
 Route::middleware(['auth'])->group(function () {
     Route::resource('hotel', HotelController::class);
     Route::resource('transaction', TransactionController::class);
@@ -43,6 +40,7 @@ Auth::routes();
 Route::group(["middleware" => ["auth-login"]], function () {
     Route::get("/dashboard", [AppController::class, "dashboard"]);
     Route::resource("tipe-produk", TipeProdukController::class);
+    Route::resource('tipe-hotel', TipeHotelController::class);
     Route::resource("produk", ProdukController::class);
     Route::resource("fasilitas", FasilitasController::class);
     Route::resource("users", UsersController::class);

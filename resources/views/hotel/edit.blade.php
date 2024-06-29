@@ -1,44 +1,44 @@
-@extends('layout.conquer2')
-@section('eleanor')
-<form method="POST" action="{{ route('hotel.update',$data->id) }}">
+<form action="{{ url('/hotel/' . $edit['id']) }}" method="POST">
   @csrf
-  @method('PUT')
+  @method("PUT")
+  <div class="modal-body">
     <div class="form-group">
-      <label for="tipeInput">Nama Hotel</label>
-      <input name="namaHotel" value="{{$data->name}}" type="text" class="form-control" id="inputHotel" aria-describedby="tipelHelp" placeholder="Enter Nama Hotel">
-      
-    </div>
-    <div class="form-group">
-      <label for="tipeInput">Address Hotel</label>
-      <input name="address" value="{{$data->address}}"  type="text" class="form-control" id="inputHotel" aria-describedby="tipelHelp" placeholder="Enter Alamat Hotel">
-      
-    </div>
-
-    <div class="form-group">
-      <label for="tipeInput">City Hotel</label>
-      <input name="city" value="{{$data->city}}" type="text" class="form-control" id="inputHotel" aria-describedby="tipelHelp" placeholder="Enter Kota Hotel">
-      
-    </div>
-
-
-    <div class="form-group">
-      <label class="col-md-3 control-label">Dropdown</label>
-      <div class="col-md-9">
-        <select class="form-control" name="type">
-          @foreach ($tipes as $t)
-            <option 
-              {{-- <?php if ($t->id == $data->type_id) echo 'selected';?> --}}
-              @if($t->id == $data->type_id)
-                 selected
-              @endif
-              value="{{$t->id}}">{{ $t->name}} </option>  
-          @endforeach
-          
-         
+        <label for="name"> Tipe Hotel </label>
+        <select class="form-control" name="tipe_hotel_id" id="tipe_hotel_id" required value="{{ old('tipe_hotel_id') }}">
+            <option selected>~~ PILIH TIPE HOTEL ~~</option>
+            @foreach ($tipe_hotel as $tipe)
+            <option value="{{ $tipe->id }}">{{ $tipe->nama }}</option>
+            @endforeach
         </select>
-      </div>
     </div>
-   
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-@endsection
+    <div class="form-group">
+        <label for="name"> Nama Hotel </label>
+        <input type="text" class="form-control" name="nama" id="nama"
+            placeholder="Masukkan Nama Hotel" required value="{{ old('nama') }}">
+    </div>
+    <div class="form-group">
+        <label for="alamat"> Alamat </label>
+        <textarea class="form-control" name="alamat" placeholder="Masukkan alamat hotel" id="alamat" required value="{{ old('nama') }}">
+
+        </textarea>
+    </div>
+    <div class="form-group">
+        <label for="nomor_telepon"> Nomor Telepon </label>
+        <input type="text" class="form-control" name="nomor_telepon" id="nomor_telepon"
+            placeholder="Masukkan nomor telepon" required value="{{ old('nomor_telepon') }}">
+    </div>
+    <div class="form-group">
+        <label for="email"> Email </label>
+        <input type="email" class="form-control" name="email" id="email"
+            placeholder="Masukkan email" required value="{{ old('email') }}">
+    </div>
+</div>
+  <div class="modal-footer">
+      <button type="reset" class="btn btn-danger btn-sm">
+          <i class="fa fa-times" style="margin-right: 5px"></i> Batal
+      </button>
+      <button type="submit" class="btn btn-primary btn-sm">
+          <i class="fa fa-save" style="margin-right: 5px;"></i> Simpan
+      </button>
+  </div>
+</form>

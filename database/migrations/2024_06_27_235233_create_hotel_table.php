@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hotel', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('tipe_hotel_id');
+            $table->string('tipe_hotel_id');
             $table->string('nama', 255);
             $table->text('alamat');
             $table->string('nomor_telepon', 15);

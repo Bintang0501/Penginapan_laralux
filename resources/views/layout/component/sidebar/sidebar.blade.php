@@ -23,6 +23,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ url('tipe-hotel') }}">
+                    <i class="icon-bar-chart"></i>
+                    <span class="title">Tipe Hotel</span>
+                </a>
+            </li>
+            <li>
                 <a href="{{ url('hotel') }}">
                     <i class="icon-bar-chart"></i>
                     <span class="title">Daftar Hotel</span>

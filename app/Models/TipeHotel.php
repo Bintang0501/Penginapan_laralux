@@ -24,6 +24,6 @@ class TipeHotel extends Model
 
     public function hotel()
     {
-        return $this->hasMany(Hotel::class, "tipe_hotel_id");
+        return $this->hasMany(Hotel::class, "tipe_hotel_id", "id");
     }
 }

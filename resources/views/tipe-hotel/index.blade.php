@@ -1,6 +1,6 @@
 @extends('layout.conquer2')
 
-@section('icha', 'Tipe Produk')
+@section('icha', 'Tipe Hotel')
 
 @section('css')
     <link rel="stylesheet" href="{{ URL::asset('datatables/css/datatables.bootstrap.css') }}">
@@ -43,7 +43,7 @@
                     @php
                         $nomer = 0;
                     @endphp
-                    @foreach ($tipeProduk as $item)
+                    @foreach ($tipeHotel as $item)
                         <tr>
                             <td style="text-align: center">{{ ++$nomer }}.</td>
                             <td>{{ $item->nama }}</td>
@@ -52,7 +52,7 @@
                                     class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">
                                     <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
                                 </button>
-                                <form action="{{ url('/tipe-produk/' . $item['id']) }}" method="POST"
+                                <form action="{{ url('/tipe-hotel/' . $item['id']) }}" method="POST"
                                     style="display: inline">
                                     @csrf
                                     @method('DELETE')
@@ -81,13 +81,13 @@
                         <i class="fa fa-plus"></i> Tambah Data
                     </h4>
                 </div>
-                <form action="{{ url('/tipe-produk') }}" method="POST">
+                <form action="{{ url('/tipe-hotel') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="nama"> Tipe Produk </label>
-                            <input type="text" class="form-control" name="nama" id="nama"
-                                placeholder="Masukkan Tipe Produk" required value="{{ old('nama') }}">
+                            <label for="name"> Tipe Hotel </label>
+                            <input type="text" class="form-control" name="nama" id="name"
+                                placeholder="Masukkan Tipe Hotel" required value="{{ old('name') }}">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -133,9 +133,9 @@
     <script type="text/javascript">
         new DataTable('#example');
 
-        function editData(idTipeProduk) {
+        function editData(idtipeHotel) {
             $.ajax({
-                url: "{{ url('/tipe-produk') }}" + "/" + idTipeProduk + "/edit",
+                url: "{{ url('/tipe-hotel') }}" + "/" + idtipeHotel + "/edit",
                 type: "GET",
                 success: function(response) {
                     $("#modal-content-edit").html(response)

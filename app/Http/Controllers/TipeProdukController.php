@@ -21,7 +21,7 @@ class TipeProdukController extends Controller
 
             DB::beginTransaction();
 
-            $data["tipeProduk"] = $this->tipeProduk->orderBy("name", "ASC")->get();
+            $data["tipeProduk"] = $this->tipeProduk->orderBy("nama", "ASC")->get();
 
             DB::commit();
 
