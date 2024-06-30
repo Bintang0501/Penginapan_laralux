@@ -37,4 +37,26 @@ class RiwaayatTransaksiSaya extends Controller
             return redirect()->to("/dashboard")->with("error", $e->getMessage());
         }
     }
+
+    public function show($id)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $data = [
+                "detail" => $this->transaksi->where("id", $id)->first()
+            ];
+
+            DB::commit();
+
+            return view("riwayat-transaksi-saya.detail", $data);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return redirect()->to("/dashboard")->with("error", $e->getMessage());
+        }
+    }
 }
