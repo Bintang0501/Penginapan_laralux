@@ -72,6 +72,7 @@
                         <th>Produk</th>
                         <th class="text-center">QTY</th>
                         <th class="text-center">Harga</th>
+                        <th class="text-center">Total</th>
                         <th style="text-align: center">Aksi</th>
                     </tr>
                 </thead>
@@ -85,6 +86,7 @@
                             <td>{{ $item->produk->nama }}</td>
                             <td class="text-center">{{ $item->qty }}</td>
                             <td class="text-center">Rp. {{ number_format($item['harga']) }}</td>
+                            <td class="text-center">Rp. {{ number_format($item->qty * $item->harga) }}</td>
                             <td class="text-center">
                                 <button onclick="editData(`{{ $item['id'] }}`)" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">
                                     <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
@@ -132,7 +134,7 @@
         function editData(idKeranjangDetail)
         {
             $.ajax({
-                url: "{{ url('/') }}",
+                url: "{{ url('/rekomendasi-hotel') }}" + "/" + idKeranjangDetail + "/edit-data",
                 type: "GET",
                 success: function(response) {
                     $("#modal-content-edit").html(response);

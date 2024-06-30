@@ -64,7 +64,9 @@ Route::group(["middleware" => ["auth-login"]], function () {
             Route::get("/{hotelId}/create-reservasi", "createReservasi");
             Route::post("/create-reservasi/{produkId}", "createKeranjang");
             Route::get("/{produkId}/data/lihat-keranjang", "lihatKeranjang");
+            Route::get("/{keranjangDetailId}/edit-data", "editData");
             Route::delete("/{keranjangDetailId}/hapus-keranjang-detail", "hapusKeranjangDetail");
+            Route::put("/update-reservasi/{keranjangDetailId}", "editKeranjangDetail");
         });
     });
 
