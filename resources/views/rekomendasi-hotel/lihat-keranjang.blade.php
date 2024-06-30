@@ -19,7 +19,7 @@
     @endif
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="portlet">
                 <div class="portlet-title">
                     <div class="caption">
@@ -30,17 +30,10 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td style="width: 50%">Tanggal Pesan</td>
-                                <td style="width: 10%">:</td>
-                                <td>
-                                    {{ $keranjang['tanggal'] }}
-                                </td>
-                            </tr>
-                            <tr>
                                 <td style="width: 50%">Total Reservasi</td>
                                 <td style="width: 10%">:</td>
                                 <td>
-                                    Rp. {{ number_format($keranjang["total"]) }}
+                                    Rp. {{ number_format($keranjang['total']) }} <strong>(Belum Pajak)</strong>
                                 </td>
                             </tr>
 
@@ -61,7 +54,7 @@
     <div class="portlet">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-bars" style="margin-right: 5px"></i> Data @yield('icha')
+                <i class="fa fa-edit" style="margin-right: 5px"></i> Detail Produk
             </div>
         </div>
         <div class="portlet-body">
@@ -70,10 +63,10 @@
                     <tr>
                         <th style="text-align: center">No.</th>
                         <th>Produk</th>
-                        <th class="text-center">QTY</th>
-                        <th class="text-center">Tipe</th>
-                        <th class="text-center">Harga</th>
-                        <th class="text-center">Total</th>
+                        <th style="text-align: center">QTY</th>
+                        <th style="text-align: center">Tipe</th>
+                        <th style="text-align: center">Harga</th>
+                        <th style="text-align: center">Total</th>
                         <th style="text-align: center">Aksi</th>
                     </tr>
                 </thead>
@@ -85,18 +78,22 @@
                         <tr>
                             <td style="text-align: center">{{ ++$nomer }}.</td>
                             <td>{{ $item->produk->nama }}</td>
-                            <td class="text-center">{{ $item->qty }}</td>
-                            <td class="text-center">{{ $item->produk->tipe_produk->nama }}</td>
-                            <td class="text-center">Rp. {{ number_format($item['harga']) }}</td>
-                            <td class="text-center">Rp. {{ number_format($item->qty * $item->harga) }}</td>
-                            <td class="text-center">
-                                <button onclick="editData(`{{ $item['id'] }}`)" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">
+                            <td style="text-align: center">{{ $item->qty }}</td>
+                            <td style="text-align: center">{{ $item->produk->tipe_produk->nama }}</td>
+                            <td style="text-align: center">Rp. {{ number_format($item['harga']) }}</td>
+                            <td style="text-align: center">Rp. {{ number_format($item->qty * $item->harga) }}</td>
+                            <td style="text-align: center">
+                                <button onclick="editData(`{{ $item['id'] }}`)" type="button"
+                                    class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">
                                     <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
                                 </button>
-                                <form style="display: inline" action="{{ url('/rekomendasi-hotel/' . $item->id . '/hapus-keranjang-detail') }}" method="POST">
+                                <form style="display: inline"
+                                    action="{{ url('/rekomendasi-hotel/' . $item->id . '/hapus-keranjang-detail') }}"
+                                    method="POST">
                                     @csrf
-                                    @method("DELETE")
-                                    <button onclick="return confirm('Apakah Anda Yakin ? Untuk Menghapus Data Ini ?')" type="submit" class="btn btn-danger btn-sm">
+                                    @method('DELETE')
+                                    <button onclick="return confirm('Apakah Anda Yakin ? Untuk Menghapus Data Ini ?')"
+                                        type="submit" class="btn btn-danger btn-sm">
                                         <i class="fa fa-trash-o"></i> Hapus
                                     </button>
                                 </form>
@@ -108,7 +105,8 @@
         </div>
     </div>
 
-    <button onclick="bayarSekarang()" type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#bayarSekarang">
+    <button onclick="bayarSekarang()" type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal"
+        data-target="#bayarSekarang">
         <i class="fa fa-money"></i> Bayar Sekarang
     </button>
 
@@ -153,8 +151,8 @@
     <script src="{{ URL::asset('datatables/javascript/datatables.js') }}"></script>
     <script src="{{ URL::asset('datatables/javascript/datatables.bootstrap.js') }}"></script>
     <script type="text/javascript">
-        function editData(idKeranjangDetail)
-        {
+        new DataTable('#example');
+        function editData(idKeranjangDetail) {
             $.ajax({
                 url: "{{ url('/rekomendasi-hotel') }}" + "/" + idKeranjangDetail + "/edit-data",
                 type: "GET",
@@ -167,13 +165,25 @@
             })
         }
 
-        function bayarSekarang()
-        {
+        function bayarSekarang() {
             $.ajax({
                 url: "{{ url('/rekomendasi-hotel/bayar-sekarang') }}",
                 type: "GET",
                 success: function(response) {
                     $("#modal-data-bayar").html(response);
+
+                    document.getElementById("reedemPoint").addEventListener("change", function() {
+                        let pointDiv = document.getElementById("viewpoint");
+                        let bayarDiv = document.getElementById("viewbayar");
+
+                        if (this.value === "ya") {
+                            pointDiv.style.display = "block";
+                            bayarDiv.style.display = "none";
+                        } else {
+                            pointDiv.style.display = "none";
+                            bayarDiv.style.display = "block";
+                        }
+                    });
                 },
                 error: function(error) {
                     console.log(error);

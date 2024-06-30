@@ -229,7 +229,6 @@ class ListRekomendasiController extends Controller
             DB::commit();
 
             return view("rekomendasi-hotel.lihat-keranjang", $data);
-
         } catch (\Exception $e) {
 
             DB::rollBack();
@@ -267,7 +266,6 @@ class ListRekomendasiController extends Controller
             } else {
                 return back()->with("success", "Data Berhasil di Hapus");
             }
-
         } catch (\Exception $e) {
 
             DB::rollBack();
@@ -289,7 +287,6 @@ class ListRekomendasiController extends Controller
             DB::commit();
 
             return view("rekomendasi-hotel.edit", $data);
-
         } catch (\Exception $e) {
 
             DB::rollBack();
@@ -339,7 +336,6 @@ class ListRekomendasiController extends Controller
             DB::commit();
 
             return back()->with("success", "Data Berhasil di Simpan");
-
         } catch (\Exception $e) {
 
             DB::rollBack();
@@ -355,13 +351,16 @@ class ListRekomendasiController extends Controller
             DB::beginTransaction();
 
             $data = [
-                "totalBayar" => $this->keranjang->where("users_id", Auth::user()->id)->where("status", "1")->first()
+                "totalBayar" => $this->keranjang->where("users_id", Auth::user()->id)->where("status", "1")->first(),
+                "point" => $this->membership->where("users_id", Auth::user()->id)->first()
             ];
+
+            $pajak = (11 / 100) * $data["totalBayar"]["total"];
+            $data["pajak"] = $data["totalBayar"]["total"] + $pajak;
 
             DB::commit();
 
             return view("rekomendasi-hotel.bayar", $data);
-
         } catch (\Exception $e) {
 
             DB::rollBack();
@@ -385,18 +384,38 @@ class ListRekomendasiController extends Controller
 
             $keranjangDetail = $this->keranjangDetail->where("keranjangId", $keranjang->id)->get();
 
-            $pajak = (11 / 100) * $keranjang->total;
+            $cekMembership = $this->membership->where("users_id", Auth::user()->id)->first();
 
-            $kembali = abs($request->total_bayar - $keranjang->total);
+            $kembali = 0;
+            $bayar = 0;
+
+            if ($request->reedemPoint == "ya") {
+                $convert = $request->point * 100000;
+
+                $bayar = abs($request->pajak - $convert);
+
+                if ($request->pajak != $convert) {
+                    $kembali = $bayar;
+                }
+
+                $cekMembership->update([
+                    "point" => $cekMembership->point - $request->point
+                ]);
+            } else {
+                $kembali = abs($request->total_bayar - $keranjang->total);
+            }
+
 
             $transaksi = $this->transaksi->create([
                 "users_id" => $keranjang->users_id,
                 "nama_users" => Auth::user()->name,
                 "email_users" => Auth::user()->email,
                 "total_beli" => $keranjang->total,
-                "pajak" => $pajak,
-                "total_bayar" => $request->bayar,
+                "pajak" => $request->pajak,
+                "total_bayar" => $request->reedemPoint == "ya" ? 0 : $request->bayar,
                 "kembalian" => $kembali,
+                "use_reedem" => $request->reedemPoint == "ya" ? "1" : "0",
+                "point" => $request->reedemPoint == "ya" ? $request->point : 0,
                 "tanggal" => date("Y-m-d H:i:s")
             ]);
 
@@ -418,7 +437,7 @@ class ListRekomendasiController extends Controller
                 } else {
                     $totalEx += $item->produk->harga * $item->qty;
 
-                    if ($totalEx >= 300000) {
+                    if ($totalEx % 300000 == 0) {
                         $point += 1;
                     } else {
                         $point += 0;
@@ -428,18 +447,26 @@ class ListRekomendasiController extends Controller
                 $this->keranjangDetail->delete();
             }
 
-            $this->membership->create([
-                "users_id" => Auth::user()->id,
-                "point" => $point,
-                "status" => 1
-            ]);
+            if ($request->reedemPoint != "ya") {
+
+                if (empty($cekMembership)) {
+                    $this->membership->create([
+                        "users_id" => Auth::user()->id,
+                        "point" => $point,
+                        "status" => 1
+                    ]);
+                } else {
+                    $cekMembership->update([
+                        "point" => $cekMembership->point + $point
+                    ]);
+                }
+            }
 
             $keranjang->delete();
 
             DB::commit();
 
             return redirect()->to("/riwayat-transaksi-saya")->with("success", "Pembelian Berhasil");
-
         } catch (\Exception $e) {
 
             DB::rollBack();
