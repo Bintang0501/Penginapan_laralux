@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('membership', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('users_id');
-            $table->integer('poin');
+            $table->string('users_id', 50);
+            $table->integer('point');
+            $table->enum("status", ["1", "0"])->default(0);
         });
     }
 

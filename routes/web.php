@@ -67,6 +67,8 @@ Route::group(["middleware" => ["auth-login"]], function () {
             Route::get("/{keranjangDetailId}/edit-data", "editData");
             Route::delete("/{keranjangDetailId}/hapus-keranjang-detail", "hapusKeranjangDetail");
             Route::put("/update-reservasi/{keranjangDetailId}", "editKeranjangDetail");
+            Route::get("/bayar-sekarang", "bayar");
+            Route::post("/pembayaran", "checkout");
         });
     });
 

@@ -22,14 +22,16 @@ class ProdukSeeder extends Seeder
     public function run(): void
     {
         $hotel = $this->hotel->first();
-        $tipeProduk = $this->tipeProduk->where("nama", 'Deluxe')->first();
-        $tipeProduk2 = $this->tipeProduk->where("nama", 'Standar')->first();
+        $tipeProduk = $this->tipeProduk->where("nama", 'deluxe')->first();
+        $tipeProduk2 = $this->tipeProduk->where("nama", 'superior')->first();
+        $tipeProduk3 = $this->tipeProduk->where("nama", 'suite')->first();
+        $tipeProduk4 = $this->tipeProduk->where("nama", 'standard')->first();
 
         $this->produk->create([
             "hotel_id" => $hotel->id,
             "tipe_produk_id" => $tipeProduk->id,
             "nama" => "Kamar A",
-            "harga" => "100000",
+            "harga" => "300000",
             "deskripsi" => "Hanya Kasur Ukuran 3x3",
         ]);
 
@@ -37,7 +39,23 @@ class ProdukSeeder extends Seeder
             "hotel_id" => $hotel->id,
             "tipe_produk_id" => $tipeProduk2->id,
             "nama" => "Kamar B",
+            "harga" => "200000",
+            "deskripsi" => "Fasilitas AC, Kasur",
+        ]);
+
+        $this->produk->create([
+            "hotel_id" => $hotel->id,
+            "tipe_produk_id" => $tipeProduk3->id,
+            "nama" => "Kamar C",
             "harga" => "100000",
+            "deskripsi" => "Fasilitas AC, Kasur",
+        ]);
+
+        $this->produk->create([
+            "hotel_id" => $hotel->id,
+            "tipe_produk_id" => $tipeProduk4->id,
+            "nama" => "Kamar C",
+            "harga" => "50000",
             "deskripsi" => "Fasilitas AC, Kasur",
         ]);
     }

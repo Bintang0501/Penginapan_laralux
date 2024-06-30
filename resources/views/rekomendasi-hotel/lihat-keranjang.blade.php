@@ -71,6 +71,7 @@
                         <th style="text-align: center">No.</th>
                         <th>Produk</th>
                         <th class="text-center">QTY</th>
+                        <th class="text-center">Tipe</th>
                         <th class="text-center">Harga</th>
                         <th class="text-center">Total</th>
                         <th style="text-align: center">Aksi</th>
@@ -85,6 +86,7 @@
                             <td style="text-align: center">{{ ++$nomer }}.</td>
                             <td>{{ $item->produk->nama }}</td>
                             <td class="text-center">{{ $item->qty }}</td>
+                            <td class="text-center">{{ $item->produk->tipe_produk->nama }}</td>
                             <td class="text-center">Rp. {{ number_format($item['harga']) }}</td>
                             <td class="text-center">Rp. {{ number_format($item->qty * $item->harga) }}</td>
                             <td class="text-center">
@@ -103,6 +105,26 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <button onclick="bayarSekarang()" type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#bayarSekarang">
+        <i class="fa fa-money"></i> Bayar Sekarang
+    </button>
+
+    <div class="modal fade" id="bayarSekarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <i class="fa fa-money"></i> Bayar
+                    </h4>
+                </div>
+                <div id="modal-data-bayar"></div>
+            </div>
         </div>
     </div>
 
@@ -138,6 +160,20 @@
                 type: "GET",
                 success: function(response) {
                     $("#modal-content-edit").html(response);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            })
+        }
+
+        function bayarSekarang()
+        {
+            $.ajax({
+                url: "{{ url('/rekomendasi-hotel/bayar-sekarang') }}",
+                type: "GET",
+                success: function(response) {
+                    $("#modal-data-bayar").html(response);
                 },
                 error: function(error) {
                     console.log(error);

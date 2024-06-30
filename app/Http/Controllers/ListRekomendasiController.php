@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Hotel;
 use App\Models\Keranjang;
 use App\Models\KeranjangDetail;
+use App\Models\Membership;
 use App\Models\Produk;
+use App\Models\Transaksi;
+use App\Models\TransaksiDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ListRekomendasiController extends Controller
 {
-    protected $listRekomendasi, $produk, $keranjang, $keranjangDetail;
+    protected $listRekomendasi, $produk, $keranjang, $keranjangDetail, $membership, $transaksi, $transaksiDetail;
 
     public function __construct()
     {
@@ -20,6 +23,9 @@ class ListRekomendasiController extends Controller
         $this->produk = new Produk();
         $this->keranjang = new Keranjang();
         $this->keranjangDetail = new KeranjangDetail();
+        $this->membership = new Membership();
+        $this->transaksi = new Transaksi();
+        $this->transaksiDetail = new TransaksiDetail();
     }
 
     public function index()
@@ -333,6 +339,106 @@ class ListRekomendasiController extends Controller
             DB::commit();
 
             return back()->with("success", "Data Berhasil di Simpan");
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return redirect()->to("/dashboard")->with("error", $e->getMessage());
+        }
+    }
+
+    public function bayar()
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $data = [
+                "totalBayar" => $this->keranjang->where("users_id", Auth::user()->id)->where("status", "1")->first()
+            ];
+
+            DB::commit();
+
+            return view("rekomendasi-hotel.bayar", $data);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                "status" => false,
+                "message" => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function checkout(Request $request)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            $keranjang = $this->keranjang->where("users_id", Auth::user()->id)
+                ->where("status", "1")
+                ->first();
+
+            $keranjangDetail = $this->keranjangDetail->where("keranjangId", $keranjang->id)->get();
+
+            $pajak = (11 / 100) * $keranjang->total;
+
+            $kembali = abs($request->total_bayar - $keranjang->total);
+
+            $transaksi = $this->transaksi->create([
+                "users_id" => $keranjang->users_id,
+                "nama_users" => Auth::user()->name,
+                "email_users" => Auth::user()->email,
+                "total_beli" => $keranjang->total,
+                "pajak" => $pajak,
+                "total_bayar" => $request->bayar,
+                "kembalian" => $kembali,
+                "tanggal" => date("Y-m-d H:i:s")
+            ]);
+
+            $totalEx = 0;
+            $point = 0;
+
+            foreach ($keranjangDetail as $item) {
+                $this->transaksiDetail->create([
+                    "transaksi_id" => $transaksi->id,
+                    "produk_id" => $item->produk_id,
+                    "nama_produk" => $item->produk->nama,
+                    "tipe_produk" => $item->produk->tipe_produk->nama,
+                    "harga" => $item->produk->harga,
+                    "qty" => $item->qty
+                ]);
+
+                if ($item->produk->tipe_produk->nama == "deluxe" || $item->produk->tipe_produk->nama == "superior" || $item->produk->tipe_produk->nama == "suite") {
+                    $point += $item->qty * 5;
+                } else {
+                    $totalEx += $item->produk->harga * $item->qty;
+
+                    if ($totalEx >= 300000) {
+                        $point += 1;
+                    } else {
+                        $point += 0;
+                    }
+                }
+
+                $this->keranjangDetail->delete();
+            }
+
+            $this->membership->create([
+                "users_id" => Auth::user()->id,
+                "point" => $point,
+                "status" => 1
+            ]);
+
+            $keranjang->delete();
+
+            DB::commit();
+
+            return redirect()->to("/riwayat-transaksi-saya")->with("success", "Pembelian Berhasil");
 
         } catch (\Exception $e) {
 

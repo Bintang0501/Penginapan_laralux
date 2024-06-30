@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('total_beli');
             $table->double('pajak');
             $table->double('total_bayar');
+            $table->double("kembalian");
             $table->dateTime('tanggal');
         });
     }

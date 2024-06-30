@@ -18,11 +18,19 @@ class TipeProdukSeeder extends Seeder
     public function run(): void
     {
         $this->tipeProduk->create([
-            "nama" => "Deluxe"
+            "nama" => "deluxe"
         ]);
 
         $this->tipeProduk->create([
-            "nama" => "Standar"
+            "nama" => "superior"
+        ]);
+
+        $this->tipeProduk->create([
+            "nama" => "suite"
+        ]);
+
+        $this->tipeProduk->create([
+            "nama" => "standard"
         ]);
     }
 }

@@ -25,9 +25,6 @@
             </div>
         </div>
         <div class="portlet-body">
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
-                <i class="fa fa-plus" style="margin-right: 5px;"></i> Tambah Data
-            </button>
 
             <a href="" class="btn btn-danger btn-sm">
                 <i class="fa fa-download"></i> Download PDF
@@ -38,42 +35,34 @@
                 <thead>
                     <tr>
                         <th style="text-align: center">No.</th>
-                        <th>Name</th>
-                        <th style="text-align: center">Tipe Produk</th>
-                        <th style="text-align: center">Harga</th>
+                        <th>Nama User</th>
+                        <th>Email User</th>
+                        <th class="text-center">Total Beli</th>
+                        <th class="text-center">Pajak</th>
+                        <th class="text-center">Total Bayar</th>
+                        <th class="text-center">Kembali</th>
                         <th style="text-align: center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-
-                </tbody>
-                {{-- <tbody>
                     @php
                         $nomer = 0;
                     @endphp
-                    @foreach ($produk as $item)
+                    @foreach ($transaksi as $item)
                         <tr>
-                            <td style="text-align: center">{{ ++$nomer }}.</td>
-                            <td>{{ $item->name }}</td>
-                            <td style="text-align: center">{{ $item->tipeProducts->name }}</td>
-                            <td style="text-align: center">Rp. {{ number_format($item->harga) }} </td>
-                            <td style="text-align: center">
-                                <button onclick="editData(`{{ $item['id'] }}`)" type="button"
-                                    class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">
-                                    <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
-                                </button>
-                                <form action="{{ url('/produk/' . $item['id']) }}" method="POST" style="display: inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button onclick="return confirm('Apakah Anda Yakin? Ingin Menghapus Data Ini?')"
-                                        type="submit" class="btn btn-danger btn-sm">
-                                        <i class="fa fa-times" style="margin-right: 5px;"></i> Hapus
-                                    </button>
-                                </form>
+                            <td class="text-center">{{ ++$nomer }}.</td>
+                            <td>{{ $item->nama_users }}</td>
+                            <td>{{ $item->email_users }}</td>
+                            <td class="text-center">Rp. {{ number_format($item->total_beli) }} </td>
+                            <td class="text-center">Rp. {{ number_format($item->pajak) }} </td>
+                            <td class="text-center">Rp. {{ number_format($item->total_bayar) }} </td>
+                            <td class="text-center">Rp. {{ number_format($item->kembalian) }} </td>
+                            <td class="text-center">
+                                -
                             </td>
                         </tr>
                     @endforeach
-                </tbody> --}}
+                </tbody>
             </table>
         </div>
     </div>

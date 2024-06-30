@@ -46,6 +46,8 @@
                         <br>
                         {{ $item->deskripsi }}
                         <br>
+                        Tipe : {{ $item->tipe_produk->nama }}
+                        <br>
                         Fasilitas :
                         <ol>
                             @foreach ($item->fasilitas as $fasilitas)
