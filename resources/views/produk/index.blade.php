@@ -16,6 +16,10 @@
         <div class="alert alert-danger">
             <strong>Gagal,</strong> {!! session('error') !!}
         </div>
+    @elseif($errors->has('error_input'))
+        <div class="alert alert-danger">
+            <strong>Gagal,</strong> {{ $errors->first('error_input') }}
+        </div>
     @endif
 
     <div class="portlet">
@@ -39,6 +43,7 @@
                     <tr>
                         <th style="text-align: center">No.</th>
                         <th>Name</th>
+                        <th>Hotel</th>
                         <th style="text-align: center">Tipe Produk</th>
                         <th style="text-align: center">Harga</th>
                         <th style="text-align: center">Aksi</th>
@@ -52,6 +57,7 @@
                         <tr>
                             <td style="text-align: center">{{ ++$nomer }}.</td>
                             <td>{{ $item->nama }}</td>
+                            <td>{{ $item->hotel->nama }}</td>
                             <td style="text-align: center">{{ $item->tipe_produk->nama }}</td>
                             <td style="text-align: center">Rp. {{ number_format($item->harga) }} </td>
                             <td style="text-align: center">
@@ -97,14 +103,14 @@
                         <div class="form-group">
                             <label for="name"> Nama Produk </label>
                             <input type="text" class="form-control" name="nama" id="name"
-                                placeholder="Masukkan Name Produk" required value="{{ old('name') }}">
+                                placeholder="Masukkan Name Produk" required value="{{ old('nama') }}">
                         </div>
                         <div class="form-group">
                             <label for="hotel_id"> Nama Hotel </label>
                             <select name="hotel_id" class="form-control" id="hotel_id" required>
                                 <option value="">- Pilih -</option>
                                 @foreach ($hotel as $item)
-                                    <option value="{{ $item->id }}">
+                                    <option value="{{ $item->id }}" {{ old('hotel_id') == $item->id ? 'selected' : '' }}>
                                         {{ $item->nama }}
                                     </option>
                                 @endforeach
@@ -115,11 +121,14 @@
                             <select name="tipe_produk_id" class="form-control" id="tipe_produk_id" required>
                                 <option value="">- Pilih -</option>
                                 @foreach ($tipeProduk as $item)
-                                    <option value="{{ $item->id }}">
+                                    <option value="{{ $item->id }}" {{ old('tipe_produk_id') == $item->id ? 'selected' : '' }}>
                                         {{ $item->nama }}
                                     </option>
                                 @endforeach
                             </select>
+                            @if ($errors->has('tipe_produk_id'))
+                                <span class="text-danger">{{ $errors->first('tipe_produk_id') }}</span>
+                            @endif
                         </div>
                         <div class="form-group">
                             <label for="harga"> Harga Produk </label>

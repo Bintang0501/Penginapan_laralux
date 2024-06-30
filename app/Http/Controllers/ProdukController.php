@@ -45,11 +45,25 @@ class ProdukController extends Controller
 
     public function store(Request $request)
     {
+        // Cek apakah ada produk dengan nama dan tipe produk yang sama
+        $existingProduct = $this->produk->where('nama', $request->nama)
+                                        ->where('tipe_produk_id', $request->tipe_produk_id)
+                                        ->where('hotel_id', $request->hotel_id)
+                                        ->first();
+
+        if ($existingProduct) {
+            return back()->withErrors([
+                'tipe_produk_id' => 'Nama produk dengan tipe produk yang sama sudah ada.',
+                'error_input' => 'Maaf ada kesalahan dalam input data silahkan coba lagi'
+                ])->withInput();
+        }
+
         try {
 
             DB::beginTransaction();
 
             $data = $request->all();
+
 
             if ($request->file('gambar')) {
                 $data["gambar"] = $request->file("gambar")->store("produk");
