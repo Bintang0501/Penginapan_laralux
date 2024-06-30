@@ -39,8 +39,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [HotelController::class, 'index']);
 });
 
-Auth::routes();
-
 Route::group(["middleware" => ["auth-login"]], function () {
     Route::get("/dashboard", [AppController::class, "dashboard"]);
     Route::resource("tipe-produk", TipeProdukController::class);
@@ -49,6 +47,27 @@ Route::group(["middleware" => ["auth-login"]], function () {
     Route::resource("fasilitas", FasilitasController::class);
     Route::resource("transaksi", TransaksiController::class);
     Route::resource("users", UsersController::class);
+
+    Route::prefix("riwayat-transaksi-saya")->group(function () {
+        Route::controller(RiwaayatTransaksiSaya::class)->group(function () {
+            Route::get("/", "index")->name("pages.riwayat-transaksi-saya.index");
+            Route::post("/", "store")->name("pages.riwayat-transaksi-saya.store");
+        });
+    });
+
+    Route::prefix("rekomendasi-hotel")->group(function() {
+        Route::controller(ListRekomendasiController::class)->group(function() {
+            Route::get("/", "index");
+            Route::get("/{id}/show-produk", "showProduk");
+            Route::post("/", "store");
+            Route::get("/{hotelId}/create-reservasi", "createReservasi");
+            Route::post("/create-reservasi/{produkId}", "createKeranjang");
+            Route::get("/{produkId}/data/lihat-keranjang", "lihatKeranjang");
+            Route::delete("/{keranjangDetailId}/hapus-keranjang-detail", "hapusKeranjangDetail");
+        });
+    });
+
+    Route::get("/logout", [LoginController::class, "logout"])->name("logout");
 });
 
 Route::group(["middleware" => ["guest"]], function () {
@@ -68,19 +87,3 @@ Route::prefix("authorization")->group(function () {
         });
     });
 });
-
-Route::prefix("riwayat-transaksi-saya")->group(function () {
-    Route::controller(RiwaayatTransaksiSaya::class)->group(function () {
-        Route::get("/", "index")->name("pages.riwayat-transaksi-saya.index");
-        Route::post("/", "store")->name("pages.riwayat-transaksi-saya.store");
-    });
-});
-
-Route::prefix("rekomendasi-hotel")->group(function() {
-    Route::controller(ListRekomendasiController::class)->group(function() {
-        Route::get("/", "index");
-        Route::get("/{id}/produk", "search");
-    });
-});
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

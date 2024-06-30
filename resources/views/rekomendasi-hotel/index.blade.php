@@ -37,9 +37,9 @@
                         <br>
                         {{ $item->email }}
                         </p>
-                        <button onclick="tambahProduk(`{{ $item->id }}`)" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                        <a href="{{ url('/rekomendasi-hotel/' . $item->id . '/show-produk') }}" class="btn btn-primary btn-sm">
                             <i class="fa fa-plus" style="margin-right: 5px;"></i> Tambah Data
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

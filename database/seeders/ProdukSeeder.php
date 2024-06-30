@@ -36,7 +36,7 @@ class ProdukSeeder extends Seeder
         $this->produk->create([
             "hotel_id" => $hotel->id,
             "tipe_produk_id" => $tipeProduk2->id,
-            "nama" => "Kamar A",
+            "nama" => "Kamar B",
             "harga" => "100000",
             "deskripsi" => "Fasilitas AC, Kasur",
         ]);

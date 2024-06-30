@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             HotelSeeder::class,
             TipeProdukSeeder::class,
             ProdukSeeder::class,
+            FasilitasSeeder::class
         ]);
     }
 }

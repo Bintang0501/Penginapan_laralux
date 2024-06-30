@@ -65,4 +65,24 @@ class LoginController extends Controller
             return back()->with("error", $e->getMessage());
         }
     }
+
+    public function logout()
+    {
+        try {
+
+            DB::beginTransaction();
+
+            Auth::logout();
+
+            DB::commit();
+
+            return redirect()->to("/authorization/login");
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return redirect()->to("/dashboard");
+        }
+    }
 }
