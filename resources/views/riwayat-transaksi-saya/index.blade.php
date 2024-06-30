@@ -58,7 +58,9 @@
                             <td class="text-center">Rp. {{ number_format($item->total_bayar) }} </td>
                             <td class="text-center">Rp. {{ number_format($item->kembalian) }} </td>
                             <td class="text-center">
-                                -
+                                <a href="{{ url('/riwayat-transaksi-saya/' . $item->id) }}" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-search"></i> Detail
+                                </a>
                             </td>
                         </tr>
                     @endforeach
