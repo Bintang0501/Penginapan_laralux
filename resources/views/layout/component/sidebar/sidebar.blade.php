@@ -15,47 +15,41 @@
                     </div>
                 </form>
             </li>
-            <li class="start active ">
+            <li class="{{ Request::segment(1) == 'dashboard' ? 'start active' : '' }}">
                 <a href="{{ url('dashboard') }}">
                     <i class="icon-home"></i>
                     <span class="title">Dashboard</span>
                     <span class="selected"></span>
                 </a>
             </li>
-            <li>
+            <li class="{{ Request::segment(1) == 'tipe-hotel' ? 'start active' : '' }}">
                 <a href="{{ url('tipe-hotel') }}">
                     <i class="icon-bar-chart"></i>
                     <span class="title">Tipe Hotel</span>
                 </a>
             </li>
-            <li>
+            <li class="{{ Request::segment(1) == 'hotel' ? 'start active' : '' }}">
                 <a href="{{ url('hotel') }}">
                     <i class="icon-bar-chart"></i>
                     <span class="title">Daftar Hotel</span>
                 </a>
             </li>
-            <li>
+            <li class="{{ Request::segment(1) == 'tipe-produk' ? 'start active' : '' }}">
                 <a href="{{ url('tipe-produk') }}">
                     <i class="icon-bar-chart"></i>
                     <span class="title">Tipe Produk</span>
                 </a>
             </li>
-            <li>
+            <li class="{{ Request::segment(1) == 'produk' ? 'start active' : '' }}">
                 <a href="{{ url('produk') }}">
                     <i class="fa fa-book"></i>
                     <span class="title">Produk</span>
                 </a>
             </li>
-            <li>
+            <li class="{{ Request::segment(1) == 'fasilitas' ? 'start active' : '' }}">
                 <a href="{{ url('fasilitas') }}">
                     <i class="fa fa-book"></i>
                     <span class="title">Fasilitas</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ url('transaksi') }}">
-                    <i class="fa fa-book"></i>
-                    <span class="title">Transaksi</span>
                 </a>
             </li>
             <li>
@@ -64,23 +58,10 @@
                     <span class="title">Laporan Transaksi</span>
                 </a>
             </li>
-            <li>
+            <li class="{{ Request::segment(1) == 'users' ? 'start active' : '' }}">
                 <a href="{{ url('users') }}">
                     <i class="fa fa-users"></i>
                     <span class="title">Users</span>
-                </a>
-            </li>
-            <li class="last ">
-                <a href="{{ url('hotel/Sheraton') }}">
-                    <i class="icon-user"></i>
-                    <span class="title">Tidak Jelas</span>
-                </a>
-            </li>
-
-            <li class="last ">
-                <a href="{{ url('transaction') }}">
-                    <i class="icon-paper"></i>
-                    <span class="title">Daftar Transaksi</span>
                 </a>
             </li>
         </ul>
