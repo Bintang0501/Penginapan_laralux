@@ -24,7 +24,7 @@ class HotelController extends Controller
 
             DB::beginTransaction();
 
-            $data["hotel"] = $this->hotel->with("tipe_hotel")->orderBy("nama", "ASC")->get();
+            $data["hotel"] = $this->hotel->orderBy("nama", "ASC")->get();
 
             $data["tipe_hotel"] = $this->tipe_hotel->all();
 

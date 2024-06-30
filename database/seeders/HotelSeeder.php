@@ -23,7 +23,7 @@ class HotelSeeder extends Seeder
         $tipeHotel2 = $this->tipeHotel->where('nama', 'Residential')->first();
 
         $this->hotel->create([
-            "tipe_hotel_id" => $tipeHotel1,
+            "tipe_hotel_id" => $tipeHotel1->id,
             "nama" => "Bentani",
             "alamat" => "Gunungjati",
             "nomor_telepon" => "85324237299",
@@ -31,7 +31,7 @@ class HotelSeeder extends Seeder
         ]);
 
         $this->hotel->create([
-            "tipe_hotel_id" => $tipeHotel2,
+            "tipe_hotel_id" => $tipeHotel2->id,
             "nama" => "Prima",
             "alamat" => "Bandung",
             "nomor_telepon" => "85324237129",
