@@ -26,11 +26,6 @@
         </div>
         <div class="portlet-body">
 
-            <a href="" class="btn btn-danger btn-sm">
-                <i class="fa fa-download"></i> Download PDF
-            </a>
-            <hr>
-
             <table class="table table-bordered" id="example" style="width: 100%">
                 <thead>
                     <tr>
@@ -60,6 +55,9 @@
                             <td class="text-center">
                                 <a href="{{ url('/riwayat-transaksi-saya/' . $item->id) }}" class="btn btn-primary btn-sm">
                                     <i class="fa fa-search"></i> Detail
+                                </a>
+                                <a href="{{ url('/riwayat-transaksi-saya/'. $item->id . "/pdf" ) }}" target="_blank" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-file-pdf-o"></i> Download PDF
                                 </a>
                             </td>
                         </tr>

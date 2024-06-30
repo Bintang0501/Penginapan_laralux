@@ -54,6 +54,7 @@ Route::group(["middleware" => ["auth-login"]], function () {
             Route::get("/", "index")->name("pages.riwayat-transaksi-saya.index");
             Route::post("/", "store")->name("pages.riwayat-transaksi-saya.store");
             Route::get("/{id}", "show");
+            Route::get('/{id}/pdf', 'downloadPDF')->name('transaksi.pdf');
         });
     });
 
