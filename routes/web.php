@@ -69,11 +69,6 @@ Route::group(["middleware" => ["auth-login"]], function () {
     });
 
     Route::get("/logout", [LoginController::class, "logout"])->name("logout");
-    // Route::prefix('/staff')->group(function () {
-    //     Route::controller(StaffController::class)->group(function () {
-    //         Route::get('/', 'index')->name('staff.index');
-    //     });
-    // });
 
 });
 
