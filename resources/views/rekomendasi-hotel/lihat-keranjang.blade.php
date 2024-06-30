@@ -86,11 +86,14 @@
                             <td class="text-center">{{ $item->qty }}</td>
                             <td class="text-center">Rp. {{ number_format($item['harga']) }}</td>
                             <td class="text-center">
-                                <form action="{{ url('/rekomendasi-hotel/' . $item->id . '/hapus-keranjang-detail') }}" method="POST">
+                                <button onclick="editData(`{{ $item['id'] }}`)" type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">
+                                    <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
+                                </button>
+                                <form style="display: inline" action="{{ url('/rekomendasi-hotel/' . $item->id . '/hapus-keranjang-detail') }}" method="POST">
                                     @csrf
                                     @method("DELETE")
                                     <button onclick="return confirm('Apakah Anda Yakin ? Untuk Menghapus Data Ini ?')" type="submit" class="btn btn-danger btn-sm">
-                                        Hapus
+                                        <i class="fa fa-trash-o"></i> Hapus
                                     </button>
                                 </form>
                             </td>
@@ -101,10 +104,43 @@
         </div>
     </div>
 
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <i class="fa fa-edit"></i> Edit Data
+                    </h4>
+                </div>
+                <div id="modal-content-edit">
+                    <!-- Form -->
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('javascript')
 
     <script src="{{ URL::asset('datatables/javascript/datatables.js') }}"></script>
     <script src="{{ URL::asset('datatables/javascript/datatables.bootstrap.js') }}"></script>
+    <script type="text/javascript">
+        function editData(idKeranjangDetail)
+        {
+            $.ajax({
+                url: "{{ url('/') }}",
+                type: "GET",
+                success: function(response) {
+                    $("#modal-content-edit").html(response);
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            })
+        }
+    </script>
 @endsection
