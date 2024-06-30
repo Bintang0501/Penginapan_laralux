@@ -24,7 +24,7 @@ class Hotel extends Model
 
     public function tipe_hotel()
     {
-        return $this->belongsTo(TipeHotel::class, "tipe_hotel_id", "id");
+        return $this->belongsTo(TipeHotel::class, "tipe_hotel_id");
     }
 
     public function produk()

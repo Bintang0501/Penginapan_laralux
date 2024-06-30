@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TipeHotelController;
 use App\Http\Controllers\RiwaayatTransaksiSaya;
+// use App\Http\Controllers\StaffController;
 use App\Http\Controllers\TipeProdukController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransaksiController;
@@ -68,6 +69,12 @@ Route::group(["middleware" => ["auth-login"]], function () {
     });
 
     Route::get("/logout", [LoginController::class, "logout"])->name("logout");
+    // Route::prefix('/staff')->group(function () {
+    //     Route::controller(StaffController::class)->group(function () {
+    //         Route::get('/', 'index')->name('staff.index');
+    //     });
+    // });
+
 });
 
 Route::group(["middleware" => ["guest"]], function () {

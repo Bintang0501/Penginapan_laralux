@@ -25,11 +25,14 @@
             </div>
         </div>
         <div class="portlet-body">
+            @if (Auth::user()->role == "STAFF")
+                
+            @else
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
                 <i class="fa fa-plus" style="margin-right: 5px;"></i> Tambah Data
             </button>
-
             <hr>
+            @endif
 
             <table class="table table-bordered" id="example" style="width: 100%">
                 <thead>
@@ -52,6 +55,9 @@
                                     class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">
                                     <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
                                 </button>
+                                @if (Auth::user()->role == "STAFF")
+                                    
+                                @else
                                 <form action="{{ url('/tipe-hotel/' . $item['id']) }}" method="POST"
                                     style="display: inline">
                                     @csrf
@@ -61,6 +67,7 @@
                                         <i class="fa fa-times" style="margin-right: 5px;"></i> Hapus
                                     </button>
                                 </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
