@@ -2,10 +2,6 @@
 
 @section('icha', 'Produk')
 
-@section('css')
-    <link rel="stylesheet" href="{{ URL::asset('datatables/css/datatables.bootstrap.css') }}">
-@endsection
-
 @section('eleanor')
 
     @if (session('success'))
@@ -28,7 +24,7 @@
         @foreach ($produk as $item)
             <div class="col-md-4">
                 <div class="portlet">
-                    <div class="portlet-body">
+                    <div class="portlet-body" style="height: 70vh">
                         @if (empty($item->gambar))
                         <img src="{{ URL::asset('images/hotel-img.jpeg') }}" alt="Image Hotel"
                             style="display: block; margin: 0 auto;">
@@ -49,16 +45,15 @@
                         Tipe : {{ $item->tipe_produk->nama }}
                         <br>
                         Fasilitas :
-                        <ol>
-                            @foreach ($item->fasilitas as $fasilitas)
-                                <li>
-                                    {{ $fasilitas->nama_fasilitas }}
-                                </li>
-                            @endforeach
-                        </ol>
+                        <br>
+                        @foreach ($item->fasilitas as $fasilitas)
+                        <span class="badge bg-danger" style="font-weight: bold">
+                            {{ $fasilitas->nama_fasilitas }}
+                        </span>
+                        @endforeach
                         </p>
                         <hr>
-                        <button onclick="reservasi(`{{ $item->id }}`)" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                        <button onclick="reservasi(`{{ $item->id }}`)" type="button" class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#myModal">
                             <i class="fa fa-plus" style="margin-right: 5px;"></i> Reservasi
                         </button>
                     </div>

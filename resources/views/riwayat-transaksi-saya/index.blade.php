@@ -31,11 +31,11 @@
                     <tr>
                         <th style="text-align: center">No.</th>
                         <th>Nama User</th>
-                        <th>Email User</th>
                         <th class="text-center">Total Beli</th>
                         <th class="text-center">Pajak</th>
                         <th class="text-center">Total Bayar</th>
                         <th class="text-center">Kembali</th>
+                        <th class="text-center">Gunakan Reedem</th>
                         <th style="text-align: center">Aksi</th>
                     </tr>
                 </thead>
@@ -47,11 +47,25 @@
                         <tr>
                             <td class="text-center">{{ ++$nomer }}.</td>
                             <td>{{ $item->nama_users }}</td>
-                            <td>{{ $item->email_users }}</td>
                             <td class="text-center">Rp. {{ number_format($item->total_beli) }} </td>
                             <td class="text-center">Rp. {{ number_format($item->pajak) }} </td>
                             <td class="text-center">Rp. {{ number_format($item->total_bayar) }} </td>
                             <td class="text-center">Rp. {{ number_format($item->kembalian) }} </td>
+                            <td class="text-center">
+                                @if ($item->use_reedem == "1")
+                                    <span class="badge badge-success">
+                                        Ya
+                                    </span>
+                                    -
+                                    <strong>
+                                        {{ $item->point }} Point
+                                    </strong>
+                                @else
+                                <span class="badge badge-danger">
+                                    Tidak
+                                </span>
+                                @endif
+                            </td>
                             <td class="text-center">
                                 <a href="{{ url('/riwayat-transaksi-saya/' . $item->id) }}" class="btn btn-primary btn-sm">
                                     <i class="fa fa-search"></i> Detail
@@ -143,20 +157,7 @@
 @section('javascript')
     <script src="{{ URL::asset('datatables/javascript/datatables.js') }}"></script>
     <script src="{{ URL::asset('datatables/javascript/datatables.bootstrap.js') }}"></script>
-    {{-- <script type="text/javascript">
+    <script type="text/javascript">
         new DataTable('#example');
-
-        function editData(idProduk) {
-            $.ajax({
-                url: "{{ url('/produk') }}" + "/" + idProduk + "/edit",
-                type: "GET",
-                success: function(response) {
-                    $("#modal-content-edit").html(response)
-                },
-                error: function(error) {
-                    console.log(error);
-                }
-            });
-        }
-    </script> --}}
+    </script>
 @endsection

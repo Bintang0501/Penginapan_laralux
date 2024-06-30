@@ -15,22 +15,22 @@
                     </div>
                 </form>
             </li>
-            <li class="start active ">
-                <a href="{{ url('hotel') }}">
+            <li class="{{ Request::segment(1) == 'dashboard' ? 'start active' : '' }}">
+                <a href="{{ url('/dashboard') }}">
                     <i class="icon-home"></i>
                     <span class="title">Dashboard</span>
                     <span class="selected"></span>
                 </a>
             </li>
-            <li>
+            <li class="{{ Request::segment(1) == "rekomendasi-hotel" ? 'start active' : '' }}">
                 <a href="{{ url('rekomendasi-hotel') }}">
                     <i class="icon-bar-chart"></i>
                     <span class="title">
-                        Rekomendasi Hotel
+                        Daftar Hotel
                     </span>
                 </a>
             </li>
-            <li>
+            <li class="{{ Request::segment(1) == "riwayat-transaksi-saya" ? 'start active' : '' }}">
                 <a href="{{ route('pages.riwayat-transaksi-saya.index') }}">
                     <i class="icon-bar-chart"></i>
                     <span class="title"> Riwayat Transaksi Saya </span>

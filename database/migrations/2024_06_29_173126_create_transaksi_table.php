@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('email_users');
             $table->double('total_beli');
             $table->double('pajak');
-            $table->double('total_bayar');
-            $table->double("kembalian");
+            $table->double('total_bayar')->nullable();
+            $table->double("kembalian")->nullable();
+            $table->enum("use_reedem", ["1", "0"])->nullable()->default("0");
+            $table->integer("point")->nullable()->default(0);
             $table->dateTime('tanggal');
         });
     }
