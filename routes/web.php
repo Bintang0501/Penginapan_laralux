@@ -53,6 +53,7 @@ Route::group(["middleware" => ["auth-login"]], function () {
         Route::controller(RiwaayatTransaksiSaya::class)->group(function () {
             Route::get("/", "index")->name("pages.riwayat-transaksi-saya.index");
             Route::post("/", "store")->name("pages.riwayat-transaksi-saya.store");
+            Route::get("/{id}", "show");
         });
     });
 
