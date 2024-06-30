@@ -50,13 +50,6 @@ Route::group(["middleware" => ["auth-login"]], function () {
     Route::resource("fasilitas", FasilitasController::class);
     Route::resource("transaksi", TransaksiController::class);
     Route::resource("users", UsersController::class);
-
-    Route::prefix('/staff')->group(function () {
-        Route::controller(StaffController::class)->group(function () {
-            Route::get('/', 'index')->name('staff.index');
-        });
-    });
-
 });
 
 Route::group(["middleware" => ["guest"]], function () {
