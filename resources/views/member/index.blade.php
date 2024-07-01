@@ -61,7 +61,9 @@
                         <th style="text-align: left">Email</th>
                         <th style="text-align: center">Jenis Kelamin</th>
                         <th>Alamat</th>
+                        @if (Auth::user()->role == "OWNER")
                         <th style="text-align: center">Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -72,7 +74,7 @@
                         <tr>
                             <td style="text-align: center">{{ ++$nomer }}.</td>
                             <td style="text-align: center">{{ $item->no_ktp }}</td>
-                            <td>{{ $item->users->name }}</td>
+                            <td style="text-align: left">{{ $item->users->name }}</td>
                             <td>{{ $item->users->email }}</td>
                             <td style="text-align: center">
                                 @if ($item->jenis_kelamin == "Laki - Laki")
@@ -82,6 +84,7 @@
                                 @endif
                             </td>
                             <td>{{ $item->alamat }}</td>
+                            @if (Auth::user()->role == "OWNER")
                             <td style="text-align: center">
                                 <button onclick="editData(`{{ $item['id'] }}`)" type="button"
                                     class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">
@@ -101,6 +104,7 @@
                                 </form>
                                 @endif
                             </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

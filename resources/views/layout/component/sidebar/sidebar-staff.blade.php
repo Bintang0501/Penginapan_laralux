@@ -52,35 +52,16 @@
                     <span class="title">Fasilitas</span>
                 </a>
             </li>
-            <li>
-                <a href="{{ url('transaksi') }}">
-                    <i class="fa fa-book"></i>
-                    <span class="title">Transaksi</span>
+            <li class="{{ Request::segment(1) == 'member' ? 'start active' : '' }}">
+                <a href="{{ url('/member') }}">
+                    <i class="fa fa-user"></i>
+                    <span class="title">Member</span>
                 </a>
             </li>
             <li>
                 <a href="{{ url('laporan') }}">
                     <i class="fa fa-book"></i>
                     <span class="title">Laporan Transaksi</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ url('users') }}">
-                    <i class="fa fa-users"></i>
-                    <span class="title">Users</span>
-                </a>
-            </li>
-            <li class="last ">
-                <a href="{{ url('hotel/Sheraton') }}">
-                    <i class="icon-user"></i>
-                    <span class="title">Tidak Jelas</span>
-                </a>
-            </li>
-
-            <li class="last ">
-                <a href="{{ url('transaction') }}">
-                    <i class="icon-paper"></i>
-                    <span class="title">Daftar Transaksi</span>
                 </a>
             </li>
         </ul>

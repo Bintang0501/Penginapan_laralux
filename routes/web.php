@@ -32,19 +32,21 @@ use App\Http\Controllers\UsersController;
 |
 */
 
-Route::get('/', [HotelController::class, 'index']);
+Route::get('/', function() {
+    return redirect()->to("/authorization/login");
+});
+
 Route::get('/tampil-produk/{id}', [ProductController::class, 'tampilProduk']);
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('hotel', HotelController::class);
     Route::resource('transaction', TransactionController::class);
-    Route::resource('tipe', TypeController::class);
-    Route::get('/', [HotelController::class, 'index']);
+    // Route::resource('tipe', TypeController::class);
 });
 
 Route::group(["middleware" => ["auth-login"]], function () {
     Route::get("/dashboard", [AppController::class, "dashboard"]);
     Route::resource("tipe-produk", TipeProdukController::class);
+    Route::resource('hotel', HotelController::class);
     Route::resource('tipe-hotel', TipeHotelController::class);
     Route::resource("produk", ProdukController::class);
     Route::resource("fasilitas", FasilitasController::class);
