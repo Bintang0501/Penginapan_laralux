@@ -11,7 +11,7 @@ class Hotel extends Model
     use HasFactory, HasUuids;
 
     protected $table = 'hotel';
-    
+
     protected $guarded = [''];
 
     public $incrementing = false;
@@ -30,5 +30,15 @@ class Hotel extends Model
     public function produk()
     {
         return $this->hasMany(Produk::class, 'hotel_id');
+    }
+
+    public function transaksiDetail()
+    {
+        return $this->hasManyThrough(
+            TransaksiDetail::class,
+            Produk::class,
+            "hotel_id",
+            "produk_id"
+        );
     }
 }

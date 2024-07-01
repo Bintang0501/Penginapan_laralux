@@ -2,6 +2,30 @@
 
 @section('icha', 'Produk')
 
+@section("breadcrumb")
+
+<ul class="page-breadcrumb">
+    <li>
+        <a href="{{ url('/dashboard') }}">
+            <i class="icon-home"></i> Dashboard
+        </a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <a href="{{ url('/rekomendasi-hotel') }}">
+            Daftar Hotel
+        </a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <a href="#">
+            @yield("icha")
+        </a>
+    </li>
+</ul>
+
+@endsection
+
 @section('eleanor')
 
     @if (session('success'))

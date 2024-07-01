@@ -7,7 +7,9 @@ use App\Http\Controllers\FasilitasController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ListRekomendasiController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TipeHotelController;
@@ -30,19 +32,21 @@ use App\Http\Controllers\UsersController;
 |
 */
 
-Route::get('/', [HotelController::class, 'index']);
+Route::get('/', function() {
+    return redirect()->to("/authorization/login");
+});
+
 Route::get('/tampil-produk/{id}', [ProductController::class, 'tampilProduk']);
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('hotel', HotelController::class);
     Route::resource('transaction', TransactionController::class);
-    Route::resource('tipe', TypeController::class);
-    Route::get('/', [HotelController::class, 'index']);
+    // Route::resource('tipe', TypeController::class);
 });
 
 Route::group(["middleware" => ["auth-login"]], function () {
     Route::get("/dashboard", [AppController::class, "dashboard"]);
     Route::resource("tipe-produk", TipeProdukController::class);
+    Route::resource('hotel', HotelController::class);
     Route::resource('tipe-hotel', TipeHotelController::class);
     Route::resource("produk", ProdukController::class);
     Route::resource("fasilitas", FasilitasController::class);
@@ -73,6 +77,16 @@ Route::group(["middleware" => ["auth-login"]], function () {
             Route::post("/pembayaran", "checkout");
         });
     });
+
+    Route::prefix("laporan")->group(function() {
+        Route::controller(LaporanController::class)->group(function() {
+            Route::get("/", "index");
+            Route::post("/filter", "filter");
+            Route::get("/hapus-filter", "hapusFilter");
+        });
+    });
+
+    Route::resource("member", MemberController::class);
 
     Route::get("/logout", [LoginController::class, "logout"])->name("logout");
 

@@ -21,4 +21,9 @@ class Membership extends Model
     public $primaryKey = 'id';
 
     public $timestamps = false;
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, "users_id");
+    }
 }

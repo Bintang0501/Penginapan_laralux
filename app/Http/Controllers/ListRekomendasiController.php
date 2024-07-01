@@ -394,9 +394,7 @@ class ListRekomendasiController extends Controller
 
                 $bayar = abs($request->pajak - $convert);
 
-                if ($request->pajak != $convert) {
-                    $kembali = $bayar;
-                }
+                $kembali = 0;
 
                 $cekMembership->update([
                     "point" => $cekMembership->point - $request->point

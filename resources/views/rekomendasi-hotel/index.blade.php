@@ -1,9 +1,27 @@
 @extends('layout.conquer2')
 
-@section('icha', 'Produk')
+@section('icha', 'Daftar Hotel')
 
 @section('css')
     <link rel="stylesheet" href="{{ URL::asset('datatables/css/datatables.bootstrap.css') }}">
+@endsection
+
+@section("breadcrumb")
+
+<ul class="page-breadcrumb">
+    <li>
+        <a href="{{ url('/dashboard') }}">
+            <i class="icon-home"></i> Dashboard
+        </a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <a href="#">
+            @yield("icha")
+        </a>
+    </li>
+</ul>
+
 @endsection
 
 @section('eleanor')
