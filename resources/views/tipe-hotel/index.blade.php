@@ -6,6 +6,24 @@
     <link rel="stylesheet" href="{{ URL::asset('datatables/css/datatables.bootstrap.css') }}">
 @endsection
 
+@section("breadcrumb")
+
+<ul class="page-breadcrumb">
+    <li>
+        <a href="{{ url('/dashboard') }}">
+            <i class="icon-home"></i> Dashboard
+        </a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <a href="#">
+            @yield("icha")
+        </a>
+    </li>
+</ul>
+
+@endsection
+
 @section('eleanor')
 
     @if (session('success'))
@@ -26,7 +44,7 @@
         </div>
         <div class="portlet-body">
             @if (Auth::user()->role == "STAFF")
-                
+
             @else
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
                 <i class="fa fa-plus" style="margin-right: 5px;"></i> Tambah Data
@@ -56,7 +74,7 @@
                                     <i class="fa fa-edit" style="margin-right: 5px;"></i> Edit
                                 </button>
                                 @if (Auth::user()->role == "STAFF")
-                                    
+
                                 @else
                                 <form action="{{ url('/tipe-hotel/' . $item['id']) }}" method="POST"
                                     style="display: inline">

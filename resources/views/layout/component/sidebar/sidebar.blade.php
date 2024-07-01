@@ -52,6 +52,12 @@
                     <span class="title">Fasilitas</span>
                 </a>
             </li>
+            <li class="{{ Request::segment(1) == 'member' ? 'start active' : '' }}">
+                <a href="{{ url('member') }}">
+                    <i class="fa fa-user"></i>
+                    <span class="title">Member</span>
+                </a>
+            </li>
             <li class="{{ Request::segment(1) == "laporan" ? 'start active' : '' }}">
                 <a href="{{ url('laporan') }}">
                     <i class="fa fa-book"></i>

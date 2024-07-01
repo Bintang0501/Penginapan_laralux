@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ListRekomendasiController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TipeHotelController;
@@ -82,6 +83,8 @@ Route::group(["middleware" => ["auth-login"]], function () {
             Route::get("/hapus-filter", "hapusFilter");
         });
     });
+
+    Route::resource("member", MemberController::class);
 
     Route::get("/logout", [LoginController::class, "logout"])->name("logout");
 

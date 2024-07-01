@@ -19,4 +19,9 @@ class Pembeli extends Model
     public $incrementing = false;
 
     protected $keyType = "string";
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, "user_id");
+    }
 }

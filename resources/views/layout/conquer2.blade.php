@@ -18,12 +18,12 @@
                     <img src="{{ asset('assets/img/logo.png') }}" alt="logo" />
                 </a>
             </div>
-            <form class="search-form search-form-header" role="form" action="index.html">
+            {{-- <form class="search-form search-form-header" role="form" action="index.html">
                 <div class="input-icon right">
                     <i class="icon-magnifier"></i>
                     <input type="text" class="form-control input-sm" name="query" placeholder="Search...">
                 </div>
-            </form>
+            </form> --}}
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
             <a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -46,24 +46,6 @@
                         <i class="fa fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a href="extra_profile.html"><i class="fa fa-user"></i> My Profile</a>
-                        </li>
-                        <li>
-                            <a href="page_calendar.html"><i class="fa fa-calendar"></i> My Calendar</a>
-                        </li>
-                        <li>
-                            <a href="page_inbox.html"><i class="fa fa-envelope"></i> My Inbox <span
-                                    class="badge badge-danger">
-                                    3 </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-tasks"></i> My Tasks <span class="badge badge-success">
-                                    7 </span>
-                            </a>
-                        </li>
-                        <li class="divider">
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ url('/logout') }}">
@@ -201,7 +183,7 @@
     <!-- BEGIN FOOTER -->
     <div class="footer">
         <div class="footer-inner">
-            2013 &copy; Conquer by keenthemes.
+            &copy; Copyright 2024 &copy;. All Rights Reserved
         </div>
         <div class="footer-tools">
             <span class="go-top">
