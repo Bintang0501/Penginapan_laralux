@@ -8,7 +8,7 @@ use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use TCPDF;
+use PDF;
 
 class RiwaayatTransaksiSaya extends Controller
 {
@@ -47,9 +47,8 @@ class RiwaayatTransaksiSaya extends Controller
 
             DB::beginTransaction();
 
-            $data = [
-                "detail" => $this->transaksi->where("id", $id)->first()
-            ];
+            $data["detail"] = $this->transaksi->where("id", $id)->first();
+            $data["detailTransaksi"] = $this->detail_transaksi->where("transaksi_id", $data['detail']['id'])->get();
 
             DB::commit();
 
@@ -64,10 +63,14 @@ class RiwaayatTransaksiSaya extends Controller
 
     public function downloadPDF($id)
     {
-        $data = [
-            "transaksi" => $this->transaksi->where("id", $id)->first(),
-            "detail" => $this->detail_transaksi->all()
-        ];
+        $transaksi = $this->transaksi->where("id", $id)->first();
+        $transaksiDetail = $this->detail_transaksi->where("transaksi_id", $transaksi["id"])->get();
+
+        $pdf = PDF::loadView("riwayat-transaksi-saya.show-pdf", ['transaksi' => $transaksi, "transaksiDetail" => $transaksiDetail])->setPaper("a3");
+
+        return $pdf->download("Nota-Pembelian.pdf");
+
+        die();
 
         // Render HTML template to string
         $html = view('riwayat-transaksi-saya.pdf', compact('data'))->render();

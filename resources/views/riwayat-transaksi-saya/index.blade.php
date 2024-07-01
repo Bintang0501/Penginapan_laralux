@@ -88,9 +88,9 @@
                                 <a href="{{ url('/riwayat-transaksi-saya/' . $item->id) }}" class="btn btn-primary btn-sm">
                                     <i class="fa fa-search"></i> Detail
                                 </a>
-                                <a href="{{ url('/riwayat-transaksi-saya/'. $item->id . "/pdf" ) }}" target="_blank" class="btn btn-danger btn-sm">
+                                {{-- <a href="{{ url('/riwayat-transaksi-saya/'. $item->id . "/pdf" ) }}" target="_blank" class="btn btn-danger btn-sm">
                                     <i class="fa fa-file-pdf-o"></i> Download PDF
-                                </a>
+                                </a> --}}
                             </td>
                         </tr>
                     @endforeach

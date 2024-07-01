@@ -1,67 +1,166 @@
 @extends('layout.conquer2')
 
-@section('icha', 'Detail Transaksi')
+@section('icha', 'Keranjang Saya')
+
+@section('css')
+    <link rel="stylesheet" href="{{ URL::asset('datatables/css/datatables.bootstrap.css') }}">
+@endsection
+
+@section("breadcrumb")
+
+<ul class="page-breadcrumb">
+    <li>
+        <a href="{{ url('/dashboard') }}">
+            <i class="icon-home"></i> Dashboard
+        </a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <a href="{{ url('/rekomendasi-hotel') }}">
+            Daftar Hotel
+        </a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <a href="{{ url('/dashboard') }}">
+            Produk
+        </a>
+        <i class="fa fa-angle-right"></i>
+    </li>
+    <li>
+        <a href="#">
+            @yield("icha")
+        </a>
+    </li>
+</ul>
+
+@endsection
 
 @section('eleanor')
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            <strong>Berhasil,</strong> {!! session('success') !!}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <div class="caption">
+                        Data Keranjang
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="width: 50%">Total Bayar</td>
+                                <td style="width: 10%">:</td>
+                                <td>
+                                    Rp. {{ number_format($detail['total_bayar']) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="width: 50%">Kembali</td>
+                                <td style="width: 10%">:</td>
+                                <td>
+                                    Rp. {{ number_format($detail['kembalian']) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="width: 50%">Tanggal</td>
+                                <td style="width: 10%">:</td>
+                                <td>
+                                    {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $detail->tanggal)->translatedFormat('d F Y - H:i:s'); }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="width: 50%">Gunakan Point?</td>
+                                <td style="width: 10%">:</td>
+                                <td>
+                                    {{ $detail->use_reedem == "0" ? "TIDAK" : "YA" }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="width: 50%">Point</td>
+                                <td style="width: 10%">:</td>
+                                <td>
+                                    {{ $detail->point }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="width: 50%">Pajak</td>
+                                <td style="width: 10%">:</td>
+                                <td>
+                                    Rp. {{ number_format($detail['pajak']) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="width: 50%">Status</td>
+                                <td style="width: 10%">:</td>
+                                <td>
+                                    SELESAI
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    @elseif(session('error'))
-        <div class="alert alert-danger">
-            <strong>Gagal,</strong> {!! session('error') !!}
-        </div>
-    @endif
+    </div>
 
     <div class="portlet">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-book" style="margin-right: 5px"></i> Data @yield('icha')
+                <i class="fa fa-edit" style="margin-right: 5px"></i> Detail Produk
             </div>
         </div>
         <div class="portlet-body">
-
-            <a href="" class="btn btn-danger btn-sm">
-                <i class="fa fa-download"></i> Download PDF
-            </a>
-            <hr>
-
             <table class="table table-bordered" id="example" style="width: 100%">
                 <thead>
                     <tr>
                         <th style="text-align: center">No.</th>
-                        <th>Nama User</th>
-                        <th>Email User</th>
-                        <th class="text-center">Total Beli</th>
-                        <th class="text-center">Pajak</th>
-                        <th class="text-center">Total Bayar</th>
-                        <th class="text-center">Kembali</th>
-                        <th style="text-align: center">Aksi</th>
+                        <th>Hotel</th>
+                        <th>Produk</th>
+                        <th style="text-align: center">Tipe</th>
+                        <th style="text-align: center">QTY</th>
+                        <th style="text-align: center">Harga</th>
+                        <th style="text-align: center">Total</th>
                     </tr>
                 </thead>
-                {{-- <tbody>
+                <tbody>
                     @php
                         $nomer = 0;
                     @endphp
-                    @foreach ($transaksi as $item)
+                    @foreach ($detailTransaksi as $item)
                         <tr>
-                            <td class="text-center">{{ ++$nomer }}.</td>
-                            <td>{{ $item->nama_users }}</td>
-                            <td>{{ $item->email_users }}</td>
-                            <td class="text-center">Rp. {{ number_format($item->total_beli) }} </td>
-                            <td class="text-center">Rp. {{ number_format($item->pajak) }} </td>
-                            <td class="text-center">Rp. {{ number_format($item->total_bayar) }} </td>
-                            <td class="text-center">Rp. {{ number_format($item->kembalian) }} </td>
-                            <td class="text-center">
-                                <a href="{{ url('/riwayat-transaksi-saya/' . $item->id) }}" class="btn btn-primary btn-sm">
-                                    <i class="fa fa-search"></i> Detail
-                                </a>
-                            </td>
+                            <td style="text-align: center">{{ ++$nomer }}.</td>
+                            <td>{{ $item->produks->hotel->nama }}</td>
+                            <td>{{ $item->nama_produk }}</td>
+                            <td style="text-align: center">{{ $item->tipe_produk }}</td>
+                            <td style="text-align: center">{{ $item->qty }}</td>
+                            <td style="text-align: center">Rp. {{ number_format($item['harga']) }}</td>
+                            <td style="text-align: center">Rp. {{ number_format($item->qty * $item->harga) }}</td>
                         </tr>
                     @endforeach
-                </tbody> --}}
+                </tbody>
             </table>
         </div>
     </div>
+
+    <a href="{{ url('/riwayat-transaksi-saya/' . $detail->id . '/pdf') }}" class="btn btn-danger btn-sm btn-block" style="font-weight: bold; text-transform: uppercase">
+        Download Nota Pembelian
+    </a>
+@endsection
+
+@section('javascript')
+
+    <script src="{{ URL::asset('datatables/javascript/datatables.js') }}"></script>
+    <script src="{{ URL::asset('datatables/javascript/datatables.bootstrap.js') }}"></script>
+    <script type="text/javascript">
+        new DataTable('#example');
+    </script>
+
 @endsection
