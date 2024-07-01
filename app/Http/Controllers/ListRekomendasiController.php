@@ -379,8 +379,8 @@ class ListRekomendasiController extends Controller
             DB::beginTransaction();
 
             $keranjang = $this->keranjang->where("users_id", Auth::user()->id)
-                ->where("status", "1")
-                ->first();
+                                         ->where("status", "1")
+                                         ->first();
 
             $keranjangDetail = $this->keranjangDetail->where("keranjangId", $keranjang->id)->get();
 
@@ -388,6 +388,8 @@ class ListRekomendasiController extends Controller
 
             $kembali = 0;
             $bayar = 0;
+
+            // dump($request->bayar); die();
 
             if ($request->reedemPoint == "ya") {
                 $convert = $request->point * 100000;
@@ -400,7 +402,7 @@ class ListRekomendasiController extends Controller
                     "point" => $cekMembership->point - $request->point
                 ]);
             } else {
-                $kembali = abs($request->total_bayar - $keranjang->total);
+                $kembali = $request->bayar - $request->pajak;
             }
 
 
