@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
@@ -21,7 +22,11 @@ class UsersController extends Controller
 
             DB::beginTransaction();
 
-            $data["users"] = $this->users->orderBy("name", "ASC")->get();
+            if (Auth::user()->role == "STAFF") {
+                $data["users"] = $this->users->where("role", "!=", "OWNER")->where("role", "!=", "PEMBELI")->orderBy("name", "ASC")->get();
+            } else {
+                $data["users"] = $this->users->where("role", "!=", "PEMBELI")->orderBy("name", "ASC")->get();
+            }
 
             DB::commit();
 

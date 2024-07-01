@@ -43,11 +43,13 @@
             </div>
         </div>
         <div class="portlet-body">
+
+            @if (Auth::user()->role == "OWNER")
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
                 <i class="fa fa-plus" style="margin-right: 5px;"></i> Tambah Data
             </button>
-
             <hr>
+            @endif
 
             <table class="table table-bordered" id="example" style="width: 100%">
                 <thead>
@@ -56,7 +58,9 @@
                         <th>Nama</th>
                         <th>Email</th>
                         <th style="text-align: center">Akses</th>
+                        @if (Auth::user()->role == "OWNER")
                         <th style="text-align: center">Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -77,6 +81,7 @@
                                     PEMBELI
                                 @endif
                             </td>
+                            @if (Auth::user()->role == "OWNER")
                             <td style="text-align: center">
                                 <button onclick="editData(`{{ $item['id'] }}`)" type="button"
                                     class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">
@@ -93,6 +98,7 @@
                                 </form>
                                 @endif
                             </td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

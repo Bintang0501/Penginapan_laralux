@@ -64,6 +64,12 @@
                     <span class="title">Laporan Transaksi</span>
                 </a>
             </li>
+            <li>
+                <a href="{{ url('users') }}">
+                    <i class="fa fa-users"></i>
+                    <span class="title">Users</span>
+                </a>
+            </li>
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>
