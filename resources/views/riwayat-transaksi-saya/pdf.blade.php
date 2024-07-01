@@ -47,7 +47,7 @@
                                             use Carbon\Carbon;
                                          @endphp
                                         <p class="color-white mb-1">Invoice Number <span>#{{ $randomId }}</span></p>
-                                        <p class="color-white mb-0">Invoice Date <span>{{ Carbon::parse($transaksi->tanggal)->format('d F Y') }}
+                                        <p class="color-white mb-0">Invoice Date <span>{{ Carbon::parse($data['transaksi']->tanggal)->format('d F Y') }}
                                         </span></p>
                                     </div>
                                 </div>
@@ -58,10 +58,10 @@
                                 <div class="col-sm-6">
                                     <div class="invoice-number mb-30">
                                         <h4 class="inv-title-1">Invoice To</h4>
-                                        <h2 class="name mb-10">{{ $transaksi->nama_users }}</h2>
+                                        <h2 class="name mb-10">{{ $data['transaksi']->nama_users }}</h2>
                                         <p class="invo-addr-1">
                                             {{-- Theme Vessel <br/> --}}
-                                            {{$transaksi->email_users}} <br/>
+                                            {{$data['transaksi']->email_users}} <br/>
                                             {{-- 21-12 Green Street, Meherpur, Bangladesh <br/> --}}
                                         </p>
                                     </div>
@@ -94,11 +94,11 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($transaksi as $item)
+                                        @foreach ($data['detail'] as $item)
                                         @php
                                             $nomer = 0;
-                                            $total = $item->transaksi_id->harga * $item->transaksi_id->qty;
-                                            $subtotal += $total;
+                                            $total = $item->harga * $item->qty;
+                                            // $subtotal += $total;
                                         @endphp
                                         <tr class="tr">
                                             <td>
@@ -106,34 +106,48 @@
                                                     <span>{{ ++$nomer }}</span>
                                                 </div>
                                             </td>
-                                            <td class="pl0">{{$item->transaksi_id->nama_produk}}</td>
-                                            <td class="text-center">{{$item->transaksi_id->harga}}</td>
-                                            <td class="text-center">{{$item->transaksi_id->qty}}</td>
+                                            <td class="pl0">{{$item->nama_produk}}</td>
+                                            <td class="text-center">{{$item->harga}}</td>
+                                            <td class="text-center">{{$item->qty}}</td>
                                             <td class="text-end">{{ $total }}</td>
                                         </tr>
     
+                                        @endforeach
                                         <tr class="tr2">
                                             <td></td>
                                             <td></td>
                                             <td></td>
                                             <td class="text-center">SubTotal</td>
-                                            <td class="text-end">{{ $subtotal }}</td>
+                                            <td class="text-end">{{ $data['transaksi']->total_beli }}</td>
                                         </tr>
                                         <tr class="tr2">
                                             <td></td>
                                             <td></td>
                                             <td></td>
                                             <td class="text-center">Tax</td>
-                                            <td class="text-end">{{ $subtotal * 0.11 }}</td>
+                                            <td class="text-end">{{ $data['transaksi']->total_beli * 0.11 }}</td>
                                         </tr>
                                         <tr class="tr2">
                                             <td></td>
                                             <td></td>
                                             <td></td>
                                             <td class="text-center f-w-600 active-color">Grand Total</td>
-                                            <td class="f-w-600 text-end active-color">{{ $subtotal + ($subtotal * 0.11) }}</td>
+                                            <td class="f-w-600 text-end active-color">{{ $data['transaksi']->pajak }}</td>
                                         </tr>
-                                        @endforeach
+                                        <tr class="tr2">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-center f-w-600 active-color">Payment</td>
+                                            <td class="f-w-600 text-end active-color">{{ $data['transaksi']->total_bayar }}</td>
+                                        </tr>
+                                        <tr class="tr2">
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td class="text-center f-w-600 active-color">Return</td>
+                                            <td class="f-w-600 text-end active-color">{{ $data['transaksi']->total_bayar - $data['transaksi']->pajak }}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -189,10 +203,10 @@
 <script src="{{ asset('assets/pdf/js/jspdf.min.js') }}"></script>
 <script src="{{ asset('assets/pdf/js/html2canvas.js') }}"></script>
 <script src="{{ asset('assets/pdf/js/app.js') }}"></script>
-<script>
+{{-- <script>
     document.getElementById('invoice_download_btn').addEventListener('click', function() {
-        window.location.href = '{{ route("downloadPDF", $transaksi->id) }}';
+        window.location.href = '{{ route("downloadPDF", $data["transaksi"]->id) }}';
     });
-</script>
+</script> --}}
 </body>
 </html>

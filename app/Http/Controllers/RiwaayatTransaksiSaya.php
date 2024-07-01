@@ -17,6 +17,7 @@ class RiwaayatTransaksiSaya extends Controller
     public function __construct()
     {
         $this->transaksi = new Transaksi();
+        $this->detail_transaksi = new TransaksiDetail();
     }
 
     public function index()
@@ -63,10 +64,13 @@ class RiwaayatTransaksiSaya extends Controller
 
     public function downloadPDF($id)
     {
-        $transaksi = $this->transaksi->findOrFail($id);
+        $data = [
+            "transaksi" => $this->transaksi->where("id", $id)->first(),
+            "detail" => $this->detail_transaksi->all()
+        ];
 
         // Render HTML template to string
-        $html = view('riwayat-transaksi-saya.pdf', compact('transaksi'))->render();
+        $html = view('riwayat-transaksi-saya.pdf', compact('data'))->render();
 
         // Create Dompdf instance
         $dompdf = new Dompdf();
@@ -79,6 +83,7 @@ class RiwaayatTransaksiSaya extends Controller
         $dompdf->render();
 
         // Output PDF to browser
+        // ['Attachment' => 0] jika tidak ingin langsung download
         return $dompdf->stream('nota_transaksi.pdf', ['Attachment' => 0]);
     }
 }
