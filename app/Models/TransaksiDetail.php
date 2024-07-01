@@ -24,8 +24,8 @@ class TransaksiDetail extends Model
 
     public function transaksi_id(){
         $this->hasMany(Transaksi::class, "transaksi_id");
-    
     }
+
     public function produk_id(){
         $this->hasMany(Produk::class, "produk_id");
     }

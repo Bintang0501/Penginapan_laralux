@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
+use App\Models\TransaksiDetail;
+use Dompdf\Dompdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +12,7 @@ use TCPDF;
 
 class RiwaayatTransaksiSaya extends Controller
 {
-    protected $transaksi;
+    protected $transaksi, $detail_transaksi;
 
     public function __construct()
     {
@@ -63,14 +65,20 @@ class RiwaayatTransaksiSaya extends Controller
     {
         $transaksi = $this->transaksi->findOrFail($id);
 
+        // Render HTML template to string
         $html = view('riwayat-transaksi-saya.pdf', compact('transaksi'))->render();
 
-        $pdf = new TCPDF();
-        $pdf->AddPage();
-        $pdf->writeHTML($html, true, false, true, false, '');
+        // Create Dompdf instance
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
 
-        return response()->streamDownload(function () use ($pdf) {
-            $pdf->Output('nota_transaksi.pdf', 'I');
-        }, 'nota_transaksi.pdf');
+        // (Optional) Setup paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render PDF (optional settings)
+        $dompdf->render();
+
+        // Output PDF to browser
+        return $dompdf->stream('nota_transaksi.pdf', ['Attachment' => 0]);
     }
 }

@@ -24,9 +24,13 @@ class Transaksi extends Model
 
     public function users_id(){
         $this->hasMany(User::class, "users_id");
-    
     }
+
     public function produk_id(){
         $this->hasMany(Produk::class, "produk_id");
+    }
+    
+    public function transaksi_id(){
+        $this->belongsTo(TransaksiDetail::class, "transaksi_id");
     }
 }
