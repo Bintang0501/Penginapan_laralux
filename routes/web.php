@@ -7,6 +7,7 @@ use App\Http\Controllers\FasilitasController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ListRekomendasiController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProdukController;
@@ -71,6 +72,14 @@ Route::group(["middleware" => ["auth-login"]], function () {
             Route::put("/update-reservasi/{keranjangDetailId}", "editKeranjangDetail");
             Route::get("/bayar-sekarang", "bayar");
             Route::post("/pembayaran", "checkout");
+        });
+    });
+
+    Route::prefix("laporan")->group(function() {
+        Route::controller(LaporanController::class)->group(function() {
+            Route::get("/", "index");
+            Route::post("/filter", "filter");
+            Route::get("/hapus-filter", "hapusFilter");
         });
     });
 

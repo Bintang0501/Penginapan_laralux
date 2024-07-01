@@ -52,7 +52,7 @@
                     <span class="title">Fasilitas</span>
                 </a>
             </li>
-            <li>
+            <li class="{{ Request::segment(1) == "laporan" ? 'start active' : '' }}">
                 <a href="{{ url('laporan') }}">
                     <i class="fa fa-book"></i>
                     <span class="title">Laporan Transaksi</span>
